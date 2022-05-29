@@ -8,3 +8,4 @@ description = "A physical replica of the A320neo's MCDU compatible with FlyByWir
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+bevy = "0.7"
