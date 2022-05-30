@@ -3,7 +3,7 @@ name = "fbw-a32nx-mcdu"
 version = "0.1.0"
 authors = ["andycodesstuff"]
 edition = "2021"
-description = "A physical replica of the A320neo's MCDU compatible with FlyByWire's A32NX"
+description = "A physical replica of the A320neo's MCDU compatible with FlyByWire's A32NX mod"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
