@@ -7,7 +7,6 @@ pub const SCREEN_PADDING: f32 = 4.2; // in percents
 
 use crate::plugins::screen::{
     components::Cell, components::Line, components::Screen, systems::screen_update, systems::setup,
-    systems::DEBUG_lines_label_update,
 };
 use bevy::prelude::*;
 use bevy_inspector_egui::{RegisterInspectable, WorldInspectorPlugin};
@@ -21,7 +20,6 @@ impl Plugin for ScreenPlugin {
             .register_inspectable::<Line>()
             .register_inspectable::<Screen>()
             .add_startup_system(setup)
-            .add_system(screen_update)
-            .add_system(DEBUG_lines_label_update);
+            .add_system(screen_update);
     }
 }

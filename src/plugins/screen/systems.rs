@@ -34,7 +34,7 @@ pub fn setup(mut commands: Commands) {
                     flex_grow: 1.0,
                     ..default()
                 },
-                color: UiColor(if is_label { Color::BLACK } else { Color::WHITE }),
+                color: UiColor(Color::BLACK),
                 ..default()
             })
             .with_children(|line| {
@@ -45,7 +45,7 @@ pub fn setup(mut commands: Commands) {
                 }
             })
             .insert(Parent(screen))
-            .insert(Line { is_label });
+            .insert(Line);
     }
 }
 
@@ -53,17 +53,5 @@ pub fn setup(mut commands: Commands) {
 pub fn screen_update(mut cells_q: Query<(&Cell, &mut Text)>) {
     for (_cell, mut _text) in cells_q.iter_mut() {
         // Update cells here
-    }
-}
-
-/// DEBUG ONLY: Updates the lines' background based on whether the line is a label or not
-#[allow(non_snake_case)]
-pub fn DEBUG_lines_label_update(mut lines_q: Query<(&Line, &mut UiColor)>) {
-    for (line, mut color) in lines_q.iter_mut() {
-        color.0 = if line.is_label {
-            Color::BLACK
-        } else {
-            Color::WHITE
-        };
     }
 }

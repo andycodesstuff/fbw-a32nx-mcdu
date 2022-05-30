@@ -26,17 +26,9 @@ impl Default for Screen {
     }
 }
 
-/// Describes the state of a row of information in the MCDU screen
+/// Describes a row of information on the MCDU screen
 #[derive(Component, Inspectable)]
-pub struct Line {
-    pub is_label: bool,
-}
-
-impl Default for Line {
-    fn default() -> Self {
-        Line { is_label: false }
-    }
-}
+pub struct Line;
 
 /// Describes the state of a cell of information on the MCDU screen
 #[derive(Component, Inspectable)]
