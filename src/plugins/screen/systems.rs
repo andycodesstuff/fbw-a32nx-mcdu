@@ -1,5 +1,6 @@
 use crate::plugins::screen::{
-    components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES, SCREEN_PADDING,
+    components::Cell, components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES,
+    SCREEN_PADDING,
 };
 use bevy::prelude::*;
 
@@ -22,8 +23,8 @@ pub fn setup(mut commands: Commands) {
         .id();
 
     // Screen lines
-    for i in 0..SCREEN_LINES {
-        let is_label = i % 2 == 0;
+    for row_index in 0..SCREEN_LINES {
+        let is_label = row_index % 2 == 0;
 
         commands
             .spawn_bundle(NodeBundle {
@@ -38,36 +39,20 @@ pub fn setup(mut commands: Commands) {
             })
             .with_children(|line| {
                 // Line columns
-                for _ in 0..SCREEN_COLUMNS {
-                    line.spawn_bundle(TextBundle::default());
+                for col_index in 0..SCREEN_COLUMNS {
+                    line.spawn_bundle(TextBundle::default())
+                        .insert(Cell::new(row_index, col_index, is_label));
                 }
             })
             .insert(Parent(screen))
-            .insert(Line {
-                is_label,
-                ..default()
-            });
+            .insert(Line { is_label });
     }
 }
 
 /// Updates the MCDU's screen with the data coming from the simulator
-pub fn screen_update(
-    screen_q: Query<&Screen>,
-    mut lines_q: Query<(Entity, &Children), With<Line>>,
-    mut columns_q: Query<&mut Text>,
-) {
-    for _ in screen_q.iter() {
-        for (_, columns) in lines_q.iter_mut() {
-            for column in columns.iter() {
-                if let Ok(text) = columns_q.get_mut(*column) {
-                    if text.sections.len() == 0 {
-                        continue;
-                    }
-
-                    // Update columns here
-                }
-            }
-        }
+pub fn screen_update(mut cells_q: Query<(&Cell, &mut Text)>) {
+    for (_cell, mut _text) in cells_q.iter_mut() {
+        // Update cells here
     }
 }
 
