@@ -1,0 +1,150 @@
+{
+  "right": {
+    "lines": [
+      [
+        "{white} CO RTE{end}",
+        "{white}FROM/TO  {end}",
+        ""
+      ],
+      [
+        "{amber}__________{end}",
+        "{amber}____|____{end}",
+        ""
+      ],
+      [
+        "{white}ALTN/CO RTE{end}",
+        "{amber}INIT {end}",
+        ""
+      ],
+      [
+        "{white}----|----------{end}",
+        "{amber}REQUEST*{end}",
+        ""
+      ],
+      [
+        "{white}FLT NBR{end}",
+        "",
+        ""
+      ],
+      [
+        "{amber}________{end}",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "{white}WIND/TEMP>{end}",
+        ""
+      ],
+      [
+        "{white}COST INDEX{end}",
+        "{white}TROPO{end}",
+        ""
+      ],
+      [
+        "{white}---{end}",
+        "{cyan}{small}36090{end}{end}",
+        ""
+      ],
+      [
+        "{white}CRZ FL/TEMP{end}",
+        "{white}GND TEMP{end}",
+        ""
+      ],
+      [
+        "{white}----- |---°{end}",
+        "{white}{cyan}---°{end}{end}",
+        ""
+      ]
+    ],
+    "scratchpad": "{white}{end}",
+    "title": "{white}INIT{end}",
+    "titleLeft": "{small}{end}",
+    "page": "",
+    "arrows": [
+      false,
+      false,
+      true,
+      true
+    ]
+  },
+  "left": {
+    "lines": [
+      [
+        "{white} CO RTE{end}",
+        "{white}FROM/TO  {end}",
+        ""
+      ],
+      [
+        "{amber}__________{end}",
+        "{amber}____|____{end}",
+        ""
+      ],
+      [
+        "{white}ALTN/CO RTE{end}",
+        "{amber}INIT {end}",
+        ""
+      ],
+      [
+        "{white}----|----------{end}",
+        "{amber}REQUEST*{end}",
+        ""
+      ],
+      [
+        "{white}FLT NBR{end}",
+        "",
+        ""
+      ],
+      [
+        "{amber}________{end}",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "{white}WIND/TEMP>{end}",
+        ""
+      ],
+      [
+        "{white}COST INDEX{end}",
+        "{white}TROPO{end}",
+        ""
+      ],
+      [
+        "{white}---{end}",
+        "{cyan}{small}36090{end}{end}",
+        ""
+      ],
+      [
+        "{white}CRZ FL/TEMP{end}",
+        "{white}GND TEMP{end}",
+        ""
+      ],
+      [
+        "{white}----- |---°{end}",
+        "{white}{cyan}---°{end}{end}",
+        ""
+      ]
+    ],
+    "scratchpad": "{white}{end}",
+    "title": "{white}INIT{end}",
+    "titleLeft": "{small}{end}",
+    "page": "",
+    "arrows": [
+      false,
+      false,
+      true,
+      true
+    ]
+  }
+}
