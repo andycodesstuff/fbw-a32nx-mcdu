@@ -1,6 +1,9 @@
-use crate::plugins::screen::{
-    components::Cell, components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES,
-    SCREEN_PADDING,
+use crate::plugins::{
+    screen::{
+        components::Cell, components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES,
+        SCREEN_PADDING,
+    },
+    server::ScreenUpdateEvent,
 };
 use bevy::prelude::*;
 
@@ -50,8 +53,14 @@ pub fn setup(mut commands: Commands) {
 }
 
 /// Updates the MCDU's screen with the data coming from the simulator
-pub fn screen_update(mut cells_q: Query<(&Cell, &mut Text)>) {
-    for (_cell, mut _text) in cells_q.iter_mut() {
-        // Update cells here
+pub fn screen_update(
+    mut cells_q: Query<(&Cell, &mut Text)>,
+    mut events: EventReader<ScreenUpdateEvent>,
+) {
+    for screen_update_event in events.iter() {
+        let _screen_update = &screen_update_event.0;
+        for (_cell, mut _text) in cells_q.iter_mut() {
+            // Update cells here
+        }
     }
 }

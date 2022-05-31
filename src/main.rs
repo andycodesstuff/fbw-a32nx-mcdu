@@ -1,6 +1,6 @@
 mod plugins;
 
-use crate::plugins::screen::ScreenPlugin;
+use crate::plugins::{screen::ScreenPlugin, server::ServerPlugin};
 use bevy::prelude::*;
 
 pub const ASPECT_RATIO: f32 = 4.0 / 3.0;
@@ -18,6 +18,7 @@ fn main() {
         })
         .add_plugins(DefaultPlugins)
         .add_plugin(ScreenPlugin)
+        .add_plugin(ServerPlugin)
         .add_startup_system(setup)
         .run();
 }

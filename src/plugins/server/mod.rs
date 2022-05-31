@@ -1,5 +1,8 @@
+pub mod systems;
+
+use crate::plugins::server::systems::setup;
+use bevy::prelude::*;
 use serde::Deserialize;
-use std::fs;
 
 /// Represents an update that has to be drawn on the MCDU screen
 #[derive(Debug, Deserialize)]
@@ -12,6 +15,9 @@ pub struct ScreenUpdate {
     pub arrows: Vec<bool>,
 }
 
+/// Represents the event associated with a screen update request
+pub struct ScreenUpdateEvent(pub ScreenUpdate);
+
 /// Represents the message sent to the server when a screen update is requested by the client
 #[derive(Debug, Deserialize)]
 struct ScreenUpdateMessage {
@@ -19,17 +25,11 @@ struct ScreenUpdateMessage {
     left: ScreenUpdate,
 }
 
-pub fn load_test_message() -> ScreenUpdate {
-    let path = "test_message.json";
-    let json_msg = fs::read_to_string(path).unwrap();
+pub struct ServerPlugin;
 
-    parse_json_msg(&json_msg).unwrap()
-}
-
-/// Parses the message in JSON format sent to the server
-fn parse_json_msg(json: &str) -> Option<ScreenUpdate> {
-    match serde_json::from_str::<ScreenUpdateMessage>(json) {
-        Ok(msg) => Some(msg.left),
-        _ => None,
+impl Plugin for ServerPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_event::<ScreenUpdateEvent>()
+            .add_startup_system(setup);
     }
 }
