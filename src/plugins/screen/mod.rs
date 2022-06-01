@@ -6,7 +6,7 @@ pub const SCREEN_COLUMNS: usize = 3;
 pub const SCREEN_PADDING: f32 = 4.2; // in percents
 
 use crate::plugins::screen::{
-    components::Cell, components::Line, components::Screen, systems::cells_update, systems::setup,
+    components::Cell, components::Line, components::Screen, systems::update_cells, systems::setup,
 };
 use bevy::prelude::*;
 use bevy_inspector_egui::{RegisterInspectable, WorldInspectorPlugin};
@@ -20,6 +20,6 @@ impl Plugin for ScreenPlugin {
             .register_inspectable::<Line>()
             .register_inspectable::<Screen>()
             .add_startup_system(setup)
-            .add_system(cells_update);
+            .add_system(update_cells);
     }
 }

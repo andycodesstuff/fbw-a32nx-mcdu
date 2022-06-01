@@ -53,7 +53,7 @@ pub fn setup(mut commands: Commands) {
 }
 
 /// Updates the state of the MCDU screen with the data coming from the simulator
-pub fn cells_update(
+pub fn update_cells(
     mut cells_q: Query<&mut Cell>,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
