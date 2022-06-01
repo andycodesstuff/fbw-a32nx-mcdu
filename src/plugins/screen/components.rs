@@ -4,7 +4,10 @@ use bevy_inspector_egui::Inspectable;
 /// Describes the state of the MCDU screen
 ///
 /// The UI of the screen is divided into a grid composed of rows (Line components) and 3
-/// columns: left, center and right (represented using the Cell component)
+/// columns: left, right and center (represented using the Cell component. Note that the order
+/// in which they were described is relevant as column index 0 will be the left-most cell, 1
+/// would be the right-most cell and 2 would be the center cell. This behaviour is inherited
+/// from the FBW A32NX mod and how it formats data sent to the MCDU server)
 #[derive(Component, Inspectable)]
 pub struct Screen {
     arrows: [bool; 4],
@@ -56,14 +59,14 @@ impl Cell {
                     sections: vec![],
                     alignment: TextAlignment {
                         vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Center,
+                        horizontal: HorizontalAlign::Right,
                     },
                 },
                 2 => Text {
                     sections: vec![],
                     alignment: TextAlignment {
                         vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Right,
+                        horizontal: HorizontalAlign::Center,
                     },
                 },
                 _ => Text::default(),

@@ -52,15 +52,26 @@ pub fn setup(mut commands: Commands) {
     }
 }
 
-/// Updates the MCDU's screen with the data coming from the simulator
-pub fn screen_update(
-    mut cells_q: Query<(&Cell, &mut Text)>,
+/// Updates the state of the MCDU screen with the data coming from the simulator
+pub fn cells_update(
+    mut cells_q: Query<&mut Cell>,
     mut events: EventReader<ScreenUpdateEvent>,
+    asset_server: Res<AssetServer>,
 ) {
     for screen_update_event in events.iter() {
-        let _screen_update = &screen_update_event.0;
-        for (_cell, mut _text) in cells_q.iter_mut() {
-            // Update cells here
+        let screen_update = &screen_update_event.0;
+        for mut cell in cells_q.iter_mut() {
+            // Pick the raw text to be rendered at the current cell
+            let raw_text = &screen_update.lines[cell.row_index][cell.col_index];
+
+            cell.text.sections = vec![TextSection {
+                value: raw_text.to_string(),
+                style: TextStyle {
+                    font: asset_server.load("HoneywellMCDU.ttf"),
+                    font_size: 32.0,
+                    color: Color::WHITE,
+                },
+            }];
         }
     }
 }
