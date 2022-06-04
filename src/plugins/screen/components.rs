@@ -34,11 +34,10 @@ impl Default for Screen {
 pub struct Line;
 
 /// Describes the state of a cell of information on the MCDU screen
-#[derive(Component, Inspectable)]
+#[derive(Component)]
 pub struct Cell {
     pub row_index: usize,
     pub col_index: usize,
-    pub text: Text,
     pub is_label: bool,
 }
 
@@ -47,30 +46,6 @@ impl Cell {
         Cell {
             row_index,
             col_index,
-            text: match col_index {
-                0 => Text {
-                    sections: vec![],
-                    alignment: TextAlignment {
-                        vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Left,
-                    },
-                },
-                1 => Text {
-                    sections: vec![],
-                    alignment: TextAlignment {
-                        vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Right,
-                    },
-                },
-                2 => Text {
-                    sections: vec![],
-                    alignment: TextAlignment {
-                        vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Center,
-                    },
-                },
-                _ => Text::default(),
-            },
             is_label,
         }
     }

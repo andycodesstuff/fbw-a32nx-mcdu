@@ -2,149 +2,149 @@
   "right": {
     "lines": [
       [
-        "{white} CO RTE{end}",
-        "{white}FROM/TO  {end}",
-        ""
-      ],
-      [
-        "{amber}__________{end}",
-        "{amber}____|____{end}",
-        ""
-      ],
-      [
-        "{white}ALTN/CO RTE{end}",
-        "{amber}INIT {end}",
-        ""
-      ],
-      [
-        "{white}----|----------{end}",
-        "{amber}REQUEST*{end}",
-        ""
-      ],
-      [
-        "{white}FLT NBR{end}",
+        "{white} V1  FLP RETR{end}",
         "",
         ""
       ],
       [
-        "{amber}________{end}",
+        "{white}{amber}___{end}{small}   {end} F={green}131{end}{end}",
         "",
         ""
       ],
       [
-        "",
-        "",
+        "{white} VR  SLT RETR{end}",
+        "{white}TO SHIFT {end}",
         ""
       ],
       [
-        "",
-        "{white}WIND/TEMP>{end}",
+        "{white}{amber}___{end}{small}   {end} S={green}163{end}{end}",
+        "{white}{inop}----{end} {end}",
         ""
       ],
       [
-        "{white}COST INDEX{end}",
-        "{white}TROPO{end}",
+        "{white} V2     CLEAN{end}",
+        "{white}FLAPS/THS{end}",
         ""
       ],
       [
-        "{white}---{end}",
-        "{cyan}{small}36090{end}{end}",
+        "{white}{amber}___{end}{small}   {end} O={green}178{end}{end}",
+        "{cyan}[]/[   ]{end}",
         ""
       ],
       [
-        "{white}CRZ FL/TEMP{end}",
-        "{white}GND TEMP{end}",
+        "{white}TRANS ALT{end}",
+        "{white}FLEX TO TEMP{end}",
         ""
       ],
       [
-        "{white}----- |---°{end}",
-        "{white}{cyan}---°{end}{end}",
+        "{white}{cyan}{end}{end}",
+        "{cyan}[  ]°{end}",
+        ""
+      ],
+      [
+        "{white}THR RED/ACC{end}",
+        "{white}ENG OUT ACC{end}",
+        ""
+      ],
+      [
+        "{white}-----/-----{end}",
+        "{white}-----{end}",
+        ""
+      ],
+      [
+        "{inop} UPLINK{end}",
+        "{white}NEXT {end}",
+        ""
+      ],
+      [
+        "{inop}<TO DATA{end}",
+        "{white}PHASE>{end}",
         ""
       ]
     ],
-    "scratchpad": "{white}{end}",
-    "title": "{white}INIT{end}",
+    "scratchpad": "{white}GPS PRIMARY{end}",
+    "title": "{white}TAKE OFF RWY {green}   {end}{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [
       false,
       false,
-      true,
-      true
+      false,
+      false
     ]
   },
   "left": {
     "lines": [
       [
-        "{white} CO RTE{end}",
-        "{white}FROM/TO  {end}",
-        ""
-      ],
-      [
-        "{amber}__________{end}",
-        "{amber}____|____{end}",
-        ""
-      ],
-      [
-        "{white}ALTN/CO RTE{end}",
-        "{amber}INIT {end}",
-        ""
-      ],
-      [
-        "{white}----|----------{end}",
-        "{amber}REQUEST*{end}",
-        ""
-      ],
-      [
-        "{white}FLT NBR{end}",
+        "{white} V1  FLP RETR{end}",
         "",
         ""
       ],
       [
-        "{amber}________{end}",
+        "{white}{amber}___{end}{small}   {end} F={green}131{end}{end}",
         "",
         ""
       ],
       [
-        "",
-        "",
+        "{white} VR  SLT RETR{end}",
+        "{white}TO SHIFT {end}",
         ""
       ],
       [
-        "",
-        "{white}WIND/TEMP>{end}",
+        "{white}{amber}___{end}{small}   {end} S={green}163{end}{end}",
+        "{white}{inop}----{end} {end}",
         ""
       ],
       [
-        "{white}COST INDEX{end}",
-        "{white}TROPO{end}",
+        "{white} V2     CLEAN{end}",
+        "{white}FLAPS/THS{end}",
         ""
       ],
       [
-        "{white}---{end}",
-        "{cyan}{small}36090{end}{end}",
+        "{white}{amber}___{end}{small}   {end} O={green}178{end}{end}",
+        "{cyan}[]/[   ]{end}",
         ""
       ],
       [
-        "{white}CRZ FL/TEMP{end}",
-        "{white}GND TEMP{end}",
+        "{white}TRANS ALT{end}",
+        "{white}FLEX TO TEMP{end}",
         ""
       ],
       [
-        "{white}----- |---°{end}",
-        "{white}{cyan}---°{end}{end}",
+        "{white}{cyan}{end}{end}",
+        "{cyan}[  ]°{end}",
+        ""
+      ],
+      [
+        "{white}THR RED/ACC{end}",
+        "{white}ENG OUT ACC{end}",
+        ""
+      ],
+      [
+        "{white}-----/-----{end}",
+        "{white}-----{end}",
+        ""
+      ],
+      [
+        "{inop} UPLINK{end}",
+        "{white}NEXT {end}",
+        ""
+      ],
+      [
+        "{inop}<TO DATA{end}",
+        "{white}PHASE>{end}",
         ""
       ]
     ],
-    "scratchpad": "{white}{end}",
-    "title": "{white}INIT{end}",
+    "scratchpad": "{white}GPS PRIMARY{end}",
+    "title": "{white}TAKE OFF RWY {green}   {end}{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [
       false,
       false,
-      true,
-      true
+      false,
+      false
     ]
   }
 }

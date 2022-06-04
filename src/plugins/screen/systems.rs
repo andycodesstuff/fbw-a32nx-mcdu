@@ -1,9 +1,12 @@
-use crate::plugins::{
-    screen::{
-        components::Cell, components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES,
-        SCREEN_PADDING,
+use crate::{
+    plugins::{
+        screen::{
+            components::Cell, components::Line, components::Screen, SCREEN_COLUMNS, SCREEN_LINES,
+            SCREEN_PADDING,
+        },
+        server::{ScreenUpdateEvent, TextFormatter, TextVertex},
     },
-    server::ScreenUpdateEvent,
+    utils::graph::Graph,
 };
 use bevy::prelude::*;
 
@@ -43,8 +46,22 @@ pub fn setup(mut commands: Commands) {
             .with_children(|line| {
                 // Line columns
                 for col_index in 0..SCREEN_COLUMNS {
-                    line.spawn_bundle(TextBundle::default())
-                        .insert(Cell::new(row_index, col_index, is_label));
+                    line.spawn_bundle(TextBundle {
+                        text: Text {
+                            sections: vec![],
+                            alignment: TextAlignment {
+                                vertical: VerticalAlign::Center,
+                                horizontal: match col_index {
+                                    0 => HorizontalAlign::Left,
+                                    1 => HorizontalAlign::Right,
+                                    2 => HorizontalAlign::Center,
+                                    _ => HorizontalAlign::Left,
+                                },
+                            },
+                        },
+                        ..default()
+                    })
+                    .insert(Cell::new(row_index, col_index, is_label));
                 }
             })
             .insert(Parent(screen))
@@ -52,26 +69,68 @@ pub fn setup(mut commands: Commands) {
     }
 }
 
-/// Updates the state of the MCDU screen with the data coming from the simulator
-pub fn update_cells(
-    mut cells_q: Query<&mut Cell>,
+/// Updates the UI of the MCDU screen with the data coming from the simulator
+pub fn update_screen(
+    mut q: Query<(&Cell, &mut Text)>,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
 ) {
     for screen_update_event in events.iter() {
         let screen_update = &screen_update_event.0;
-        for mut cell in cells_q.iter_mut() {
-            // Pick the raw text to be rendered at the current cell
-            let raw_text = &screen_update.lines[cell.row_index][cell.col_index];
+        for (cell, mut text) in q.iter_mut() {
+            let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
+            println!("{:?}", parsed_text);
 
-            cell.text.sections = vec![TextSection {
-                value: raw_text.to_string(),
-                style: TextStyle {
-                    font: asset_server.load("HoneywellMCDU.ttf"),
-                    font_size: 32.0,
-                    color: Color::WHITE,
-                },
-            }];
+            text.sections = build_text_sections(parsed_text, &asset_server);
         }
     }
+}
+
+/// Builds the text sections of a Text component given a tree-like representation of how
+/// text should be segmented and styled
+fn build_text_sections(
+    parsed_text: &Graph<String, TextVertex, bool>,
+    asset_server: &Res<AssetServer>,
+) -> Vec<TextSection> {
+    let mut text_sections: Vec<TextSection> = Vec::new();
+
+    for (vertex_id, edges) in parsed_text.adjacency.iter() {
+        // Find leaves in the tree: a vertex/node is a leaf if it has a single edge that also
+        // connects it to its parent
+        let is_leaf = edges.len() == 1 && edges[0].1;
+        if is_leaf {
+            if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
+                // TODO: Handle AlignLeft, AlignRight, Space
+
+                let font: Handle<Font> =
+                    asset_server.load(if vertex.formatter == TextFormatter::FontSmall {
+                        "HoneywellMCDUSmall.ttf"
+                    } else {
+                        "HoneywellMCDU.ttf"
+                    });
+                let color: Color = match &vertex.formatter {
+                    TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
+                    TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
+                    TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
+                    TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
+                    TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
+                    TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
+                    TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
+                    TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
+                    _ => Color::rgb_u8(0xff, 0xff, 0xff),
+                };
+
+                text_sections.push(TextSection {
+                    value: vertex.value.clone().unwrap_or("".to_string()),
+                    style: TextStyle {
+                        font,
+                        font_size: 16.0,
+                        color,
+                    },
+                });
+            }
+        }
+    }
+
+    text_sections
 }
