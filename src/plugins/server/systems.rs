@@ -16,7 +16,11 @@ pub fn setup(mut events: EventWriter<ScreenUpdateEvent>) {
 
 fn load_test_message() -> ScreenUpdate {
     let path = "test_message.json";
-    let json_msg = fs::read_to_string(path).unwrap();
+    let mut json_msg = fs::read_to_string(path).unwrap();
+
+    // Replace unrenderable unicode character used as whitespace with a simple space
+    let nbsp_regex = Regex::new(r"\u00A0").unwrap();
+    json_msg = nbsp_regex.replace_all(&json_msg, " ").to_string();
 
     let raw_screen_update = parse_json_msg(&json_msg).unwrap();
     ScreenUpdate {
