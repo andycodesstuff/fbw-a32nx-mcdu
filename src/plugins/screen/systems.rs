@@ -7,6 +7,7 @@ use crate::{
         server::{ScreenUpdateEvent, TextFormatter, TextVertex},
     },
     utils::graph::Graph,
+    DEFAULT_HEIGHT,
 };
 use bevy::prelude::*;
 
@@ -35,7 +36,11 @@ pub fn setup(mut commands: Commands) {
         commands
             .spawn_bundle(NodeBundle {
                 style: Style {
-                    align_items: AlignItems::Center,
+                    align_items: if is_label {
+                        AlignItems::FlexStart
+                    } else {
+                        AlignItems::Center
+                    },
                     justify_content: JustifyContent::SpaceBetween,
                     flex_grow: 1.0,
                     ..default()
@@ -78,10 +83,15 @@ pub fn update_screen(
     for screen_update_event in events.iter() {
         let screen_update = &screen_update_event.0;
         for (cell, mut text) in q.iter_mut() {
-            let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
+            let Cell {
+                row_index,
+                col_index,
+                is_label,
+            } = *cell;
+            let parsed_text = &screen_update.lines[row_index][col_index];
             println!("{:?}", parsed_text);
 
-            text.sections = build_text_sections(parsed_text, &asset_server);
+            text.sections = build_text_sections(parsed_text, is_label, &asset_server);
         }
     }
 }
@@ -90,6 +100,7 @@ pub fn update_screen(
 /// text should be segmented and styled
 fn build_text_sections(
     parsed_text: &Graph<String, TextVertex, bool>,
+    is_label: bool,
     asset_server: &Res<AssetServer>,
 ) -> Vec<TextSection> {
     let mut text_sections: Vec<TextSection> = Vec::new();
@@ -102,12 +113,13 @@ fn build_text_sections(
             if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
                 // TODO: Handle AlignLeft, AlignRight, Space
 
-                let font: Handle<Font> =
-                    asset_server.load(if vertex.formatter == TextFormatter::FontSmall {
+                let font: Handle<Font> = asset_server.load(
+                    if is_label || vertex.formatter == TextFormatter::FontSmall {
                         "HoneywellMCDUSmall.ttf"
                     } else {
                         "HoneywellMCDU.ttf"
-                    });
+                    },
+                );
                 let color: Color = match &vertex.formatter {
                     TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
                     TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
@@ -124,7 +136,7 @@ fn build_text_sections(
                     value: vertex.value.clone().unwrap_or("".to_string()),
                     style: TextStyle {
                         font,
-                        font_size: 16.0,
+                        font_size: DEFAULT_HEIGHT * 0.055,
                         color,
                     },
                 });
