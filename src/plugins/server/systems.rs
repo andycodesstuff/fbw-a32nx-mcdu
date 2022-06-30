@@ -82,12 +82,21 @@ fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
                     continue;
                 }
 
-                // Add a new vertex to the graph and register its edges
+                // Create a new vertex
                 let vertex_id = Uuid::new_v4().to_string();
-                let vertex = TextVertex {
-                    formatter,
+                let mut vertex = TextVertex {
+                    formatters: vec![formatter],
                     value: None,
                 };
+
+                // Inherit formatters from parent node
+                if let Some(parent) = graph.get_vertex(current_parent.clone()) {
+                    for formatter in parent.formatters.iter() {
+                        vertex.formatters.push(formatter.clone());
+                    }
+                }
+
+                // Register the vertex and its edges
                 graph.push_vertex(vertex_id.clone(), vertex);
                 graph.push_edge(current_parent.clone(), vertex_id.clone(), false);
                 graph.push_edge(vertex_id.clone(), current_parent.clone(), true);

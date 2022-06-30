@@ -107,31 +107,42 @@ fn build_text_sections(
 
     for (vertex_id, _) in parsed_text.adjacency.iter() {
         if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
-            // TODO: Handle AlignLeft, AlignRight, Space
+            let mut font_name = "HoneywellMCDU.ttf";
+            let mut color = Color::rgb_u8(0xff, 0xff, 0xff);
 
-            let font: Handle<Font> = asset_server.load(
-                if is_label || vertex.formatter == TextFormatter::FontSmall {
-                    "HoneywellMCDUSmall.ttf"
+            // Consume the stack of formatters
+            for formatter in vertex.formatters.iter().rev() {
+                // TODO: Handle AlignLeft, AlignRight, Space
+
+                // Extract which font to use
+                if is_label {
+                    font_name = "HoneywellMCDUSmall.ttf";
                 } else {
-                    "HoneywellMCDU.ttf"
-                },
-            );
-            let color: Color = match &vertex.formatter {
-                TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
-                TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
-                TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
-                TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
-                TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
-                TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
-                TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
-                TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
-                _ => Color::rgb_u8(0xff, 0xff, 0xff),
-            };
+                    font_name = match formatter {
+                        TextFormatter::FontBig => "HoneywellMCDU.ttf",
+                        TextFormatter::FontSmall => "HoneywellMCDUSmall.ttf",
+                        _ => font_name,
+                    }
+                }
+
+                // Extract which color to use
+                color = match formatter {
+                    TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
+                    TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
+                    TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
+                    TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
+                    TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
+                    TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
+                    TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
+                    TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
+                    _ => color,
+                };
+            }
 
             text_sections.push(TextSection {
                 value: vertex.value.clone().unwrap_or("".to_string()),
                 style: TextStyle {
-                    font,
+                    font: asset_server.load(font_name),
                     font_size: DEFAULT_HEIGHT * 0.055,
                     color,
                 },

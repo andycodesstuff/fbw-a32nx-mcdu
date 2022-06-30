@@ -20,21 +20,21 @@ type ParsedText = Graph<String, TextVertex, bool>;
 
 #[derive(Debug, Hash)]
 pub struct TextVertex {
-    pub formatter: TextFormatter,
+    pub formatters: Vec<TextFormatter>,
     pub value: Option<String>,
 }
 
 impl Default for TextVertex {
     fn default() -> Self {
         TextVertex {
-            formatter: TextFormatter::End,
+            formatters: Vec::new(),
             value: None,
         }
     }
 }
 
 /// Represents the various text formatters that can be used on the MCDU screen
-#[derive(Debug, Hash, PartialEq)]
+#[derive(Clone, Debug, Hash, PartialEq)]
 pub enum TextFormatter {
     AlignLeft,
     AlignRight,
