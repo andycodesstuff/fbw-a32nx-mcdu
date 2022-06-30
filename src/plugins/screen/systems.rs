@@ -83,15 +83,8 @@ pub fn update_screen(
     for screen_update_event in events.iter() {
         let screen_update = &screen_update_event.0;
         for (cell, mut text) in q.iter_mut() {
-            let Cell {
-                row_index,
-                col_index,
-                is_label,
-            } = *cell;
-            let parsed_text = &screen_update.lines[row_index][col_index];
-            println!("{:?}", parsed_text);
-
-            text.sections = build_text_sections(parsed_text, is_label, &asset_server);
+            let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
+            text.sections = build_text_sections(parsed_text, cell.is_label, &asset_server);
         }
     }
 }

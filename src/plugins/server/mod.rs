@@ -81,6 +81,7 @@ pub struct ScreenUpdateEvent(pub ScreenUpdate);
 /// Represents the message sent to the server when a screen update is requested by the client
 #[derive(Debug, Deserialize)]
 struct ScreenUpdateMessage {
+    #[allow(dead_code)]
     right: ScreenState,
     left: ScreenState,
 }

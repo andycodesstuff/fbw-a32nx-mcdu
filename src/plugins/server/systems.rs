@@ -115,11 +115,9 @@ fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
                 let value_len: usize = value.graphemes(true).map(|c| c.bytes().count()).sum();
 
                 // Update the vertex
-                graph.get_vertex_mut(current_parent.clone()).unwrap().value = Some(value);
-                graph
-                    .get_vertex_mut(current_parent.clone())
-                    .unwrap()
-                    .position = position;
+                let mut vertex = graph.get_vertex_mut(current_parent.clone()).unwrap();
+                vertex.value = Some(value);
+                vertex.position = position;
                 position += 1;
 
                 // Continue parsing after the text that has just been extracted
