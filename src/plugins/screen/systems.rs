@@ -105,8 +105,12 @@ fn build_text_sections(
 ) -> Vec<TextSection> {
     let mut text_sections: Vec<TextSection> = Vec::new();
 
-    for (vertex_id, _) in parsed_text.adjacency.iter() {
-        if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
+    // Sort the vertices according to the order in which they have to be displayed
+    let mut vertices_sorted = parsed_text.vertices.iter().collect::<Vec<_>>();
+    vertices_sorted.sort_by(|a, b| a.1.position.cmp(&b.1.position));
+
+    for (vertex_id, _) in vertices_sorted.iter() {
+        if let Some(vertex) = parsed_text.get_vertex(vertex_id.to_string()) {
             let mut font_name = "HoneywellMCDU.ttf";
             let mut color = Color::rgb_u8(0xff, 0xff, 0xff);
 

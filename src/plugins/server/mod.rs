@@ -22,6 +22,7 @@ type ParsedText = Graph<String, TextVertex, bool>;
 pub struct TextVertex {
     pub formatters: Vec<TextFormatter>,
     pub value: Option<String>,
+    pub position: i32,
 }
 
 impl Default for TextVertex {
@@ -29,6 +30,7 @@ impl Default for TextVertex {
         TextVertex {
             formatters: Vec::new(),
             value: None,
+            position: -1,
         }
     }
 }

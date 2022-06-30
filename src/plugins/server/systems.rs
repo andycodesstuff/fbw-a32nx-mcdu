@@ -61,6 +61,7 @@ fn parse_json_msg(json: &str) -> Option<ScreenState> {
 fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
     let mut current_text: String = raw_text;
     let mut current_parent: String = "root".to_string();
+    let mut position = 0;
 
     // Create a new graph with a single node to use as root
     let mut graph: Graph<String, TextVertex, bool> = Graph::new();
@@ -87,6 +88,7 @@ fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
                 let mut vertex = TextVertex {
                     formatters: vec![formatter],
                     value: None,
+                    ..default()
                 };
 
                 // Inherit formatters from parent node
@@ -114,6 +116,11 @@ fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
 
                 // Update the vertex
                 graph.get_vertex_mut(current_parent.clone()).unwrap().value = Some(value);
+                graph
+                    .get_vertex_mut(current_parent.clone())
+                    .unwrap()
+                    .position = position;
+                position += 1;
 
                 // Continue parsing after the text that has just been extracted
                 let section = &current_text[(if value_len > 0 { value_len } else { 0 })..];
