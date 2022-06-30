@@ -28,9 +28,16 @@ fn load_test_message() -> ScreenUpdate {
             .lines
             .iter()
             .map(|line| {
-                line.iter()
+                // Parse the line and swap the right and center column (FlyByWire's A32NX mod
+                // uses the following layout [left, right, center] to represent a line whereas
+                // in this project I prefer to use [left, center, right])
+                let mut line = line
+                    .iter()
                     .map(|section| parse_raw_text(section.clone()))
-                    .collect()
+                    .collect::<Vec<Graph<String, TextVertex, bool>>>();
+                line.swap(1, 2);
+
+                line
             })
             .collect(),
         scratchpad: parse_raw_text(raw_screen_update.scratchpad),

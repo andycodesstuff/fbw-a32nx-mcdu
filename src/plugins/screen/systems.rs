@@ -53,8 +53,8 @@ pub fn setup(mut commands: Commands) {
                                 vertical: VerticalAlign::Center,
                                 horizontal: match col_index {
                                     0 => HorizontalAlign::Left,
-                                    1 => HorizontalAlign::Right,
-                                    2 => HorizontalAlign::Center,
+                                    1 => HorizontalAlign::Center,
+                                    2 => HorizontalAlign::Right,
                                     _ => HorizontalAlign::Left,
                                 },
                             },
