@@ -105,42 +105,37 @@ fn build_text_sections(
 ) -> Vec<TextSection> {
     let mut text_sections: Vec<TextSection> = Vec::new();
 
-    for (vertex_id, edges) in parsed_text.adjacency.iter() {
-        // Find leaves in the tree: a vertex/node is a leaf if it has a single edge that also
-        // connects it to its parent
-        let is_leaf = edges.len() == 1 && edges[0].1;
-        if is_leaf {
-            if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
-                // TODO: Handle AlignLeft, AlignRight, Space
+    for (vertex_id, _) in parsed_text.adjacency.iter() {
+        if let Some(vertex) = parsed_text.get_vertex(vertex_id.clone()) {
+            // TODO: Handle AlignLeft, AlignRight, Space
 
-                let font: Handle<Font> = asset_server.load(
-                    if is_label || vertex.formatter == TextFormatter::FontSmall {
-                        "HoneywellMCDUSmall.ttf"
-                    } else {
-                        "HoneywellMCDU.ttf"
-                    },
-                );
-                let color: Color = match &vertex.formatter {
-                    TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
-                    TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
-                    TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
-                    TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
-                    TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
-                    TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
-                    TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
-                    TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
-                    _ => Color::rgb_u8(0xff, 0xff, 0xff),
-                };
+            let font: Handle<Font> = asset_server.load(
+                if is_label || vertex.formatter == TextFormatter::FontSmall {
+                    "HoneywellMCDUSmall.ttf"
+                } else {
+                    "HoneywellMCDU.ttf"
+                },
+            );
+            let color: Color = match &vertex.formatter {
+                TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
+                TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
+                TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
+                TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
+                TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
+                TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
+                TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
+                TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
+                _ => Color::rgb_u8(0xff, 0xff, 0xff),
+            };
 
-                text_sections.push(TextSection {
-                    value: vertex.value.clone().unwrap_or("".to_string()),
-                    style: TextStyle {
-                        font,
-                        font_size: DEFAULT_HEIGHT * 0.055,
-                        color,
-                    },
-                });
-            }
+            text_sections.push(TextSection {
+                value: vertex.value.clone().unwrap_or("".to_string()),
+                style: TextStyle {
+                    font,
+                    font_size: DEFAULT_HEIGHT * 0.055,
+                    color,
+                },
+            });
         }
     }
 
