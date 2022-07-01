@@ -1,7 +1,11 @@
 pub mod systems;
 
-use crate::{plugins::server::systems::setup, utils::graph::Graph};
+use crate::{
+    plugins::server::systems::{events_relay, setup},
+    utils::graph::Graph,
+};
 use bevy::prelude::*;
+use crossbeam_channel::Receiver;
 use serde::Deserialize;
 
 /// Represents an update that has to be drawn on the MCDU screen
@@ -75,6 +79,8 @@ impl TextFormatter {
     }
 }
 
+#[derive(Deref)]
+pub struct ScreenUpdateReceiver(Receiver<ScreenUpdate>);
 /// Represents the event associated with a screen update request
 pub struct ScreenUpdateEvent(pub ScreenUpdate);
 
@@ -100,6 +106,7 @@ pub struct ServerPlugin;
 impl Plugin for ServerPlugin {
     fn build(&self, app: &mut App) {
         app.add_event::<ScreenUpdateEvent>()
-            .add_startup_system(setup);
+            .add_startup_system(setup)
+            .add_system(events_relay);
     }
 }
