@@ -4,9 +4,14 @@ mod utils;
 use crate::plugins::{screen::ScreenPlugin, server::ServerPlugin};
 use bevy::prelude::*;
 
-pub const ASPECT_RATIO: f32 = 4.0 / 3.0;
+pub const ASPECT_RATIO: f32 = 5.0 / 4.0;
 pub const DEFAULT_HEIGHT: f32 = 600.0;
 pub const DEFAULT_WIDTH: f32 = DEFAULT_HEIGHT * ASPECT_RATIO;
+
+// Describe the height and width of the MCDU screen in characters
+pub const SCREEN_ROWS: usize = 14;
+pub const SCREEN_COLS: usize = 24;
+pub const SCREEN_PADDING: f32 = 8.0; // in pixels
 
 fn main() {
     App::new()

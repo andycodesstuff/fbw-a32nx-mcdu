@@ -29,10 +29,6 @@ impl Default for Screen {
     }
 }
 
-/// Describes a row of information on the MCDU screen
-#[derive(Component, Inspectable)]
-pub struct Line;
-
 /// Describes the state of a cell of information on the MCDU screen
 #[derive(Component)]
 pub struct Cell {

@@ -1462,6 +1462,7 @@ dependencies = [
  "bevy-inspector-egui",
  "crossbeam-channel",
  "futures-util",
+ "rand",
  "regex",
  "serde",
  "serde_json",
