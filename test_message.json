@@ -2,68 +2,68 @@
   "right": {
     "lines": [
       [
-        "{white} AT{end}",
-        "{white}EFOB{end}",
-        "{white}TIME{end}"
-      ],
-      [
-        "{green}NONE{end}",
-        "{white}---.-{end}",
-        "{white}----{end}"
-      ],
-      [
-        "",
+        "{white} ENG{end}",
         "",
         ""
       ],
       [
-        "{green}NONE{end}",
-        "{white}---.-{end}",
-        "{white}----{end}"
-      ],
-      [
-        "{white}RTE RSV/%{end}",
-        "{white}ZFW/ZFWCG{end}",
+        "{green}LEAP-1A26{end}",
+        "",
         ""
       ],
       [
-        "{white}---.-{white}/---.-{end}{end}",
-        "{cyan}42.5/25.0{end}",
+        "{white} ACTIVE NAV DATA BASE{end}",
+        "",
         ""
       ],
       [
-        "{white}ALTN  /TIME{end}",
-        "{white}FOB{sp}{sp}{sp}{sp}{sp}{end}",
+        "{cyan} 16JUN-13JUL{end}",
+        "{green}AIRAC{end}",
         ""
       ],
       [
-        "{white}---.-{white}/----{end}{end}",
-        "{cyan}{small}3.9{end}/{inop}FF{end}{sp}{sp}{end}",
+        "{white} SECOND NAV DATA BASE{end}",
+        "",
         ""
       ],
       [
-        "{white}FINAL /TIME{end}",
-        "{white}GW/{sp}{sp} CG{end}",
+        "{inop}{small}{19MAY-15JUN{end}{end}",
+        "",
         ""
       ],
       [
-        "{white}---.-/----{end}",
-        "{green}{small}46.4/  25.6{end}{end}",
+        "",
+        "{white}STORED    {end}",
         ""
       ],
       [
-        "{white}MIN DEST FOB{end}",
-        "{white}EXTRA TIME{end}",
+        "",
+        "{white}{green}00{end}{small}RTES{end} {green}00{end}{small}RWYS{end}{end}",
         ""
       ],
       [
-        "{white}---.-{end}",
-        "{white}---.-{white}/----{end}{end}",
+        "{white}CHG CODE{end}",
+        "{white}{green}{big}00{end}{end}{small}WPTS{end} {green}{big}00{end}{end}{small}NAVS{end}{end}",
+        ""
+      ],
+      [
+        "{inop}{small}[  ]{end}{end}",
+        "{white}{cyan}DELETE ALL}{end}{end}",
+        ""
+      ],
+      [
+        "{white}IDLE/PERF{end}",
+        "{white}SOFTWARE{end}",
+        ""
+      ],
+      [
+        "{green}+0.0/+0.0{end}",
+        "{inop}STATUS/XLOAD>{end}",
         ""
       ]
     ],
     "scratchpad": "{white}{end}",
-    "title": "{white}FUEL PRED{end}",
+    "title": "{white}A320-200{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [
@@ -76,68 +76,68 @@
   "left": {
     "lines": [
       [
-        "{white} AT{end}",
-        "{white}EFOB{end}",
-        "{white}TIME{end}"
-      ],
-      [
-        "{green}NONE{end}",
-        "{white}---.-{end}",
-        "{white}----{end}"
-      ],
-      [
-        "",
+        "{white} ENG{end}",
         "",
         ""
       ],
       [
-        "{green}NONE{end}",
-        "{white}---.-{end}",
-        "{white}----{end}"
-      ],
-      [
-        "{white}RTE RSV/%{end}",
-        "{white}ZFW/ZFWCG{end}",
+        "{green}LEAP-1A26{end}",
+        "",
         ""
       ],
       [
-        "{white}---.-{white}/---.-{end}{end}",
-        "{cyan}42.5/25.0{end}",
+        "{white} ACTIVE NAV DATA BASE{end}",
+        "",
         ""
       ],
       [
-        "{white}ALTN  /TIME{end}",
-        "{white}FOB{sp}{sp}{sp}{sp}{sp}{end}",
+        "{cyan} 16JUN-13JUL{end}",
+        "{green}AIRAC{end}",
         ""
       ],
       [
-        "{white}---.-{white}/----{end}{end}",
-        "{cyan}{small}3.9{end}/{inop}FF{end}{sp}{sp}{end}",
+        "{white} SECOND NAV DATA BASE{end}",
+        "",
         ""
       ],
       [
-        "{white}FINAL /TIME{end}",
-        "{white}GW/{sp}{sp} CG{end}",
+        "{inop}{small}{19MAY-15JUN{end}{end}",
+        "",
         ""
       ],
       [
-        "{white}---.-/----{end}",
-        "{green}{small}46.4/  25.6{end}{end}",
+        "",
+        "{white}STORED    {end}",
         ""
       ],
       [
-        "{white}MIN DEST FOB{end}",
-        "{white}EXTRA TIME{end}",
+        "",
+        "{white}{green}00{end}{small}RTES{end} {green}00{end}{small}RWYS{end}{end}",
         ""
       ],
       [
-        "{white}---.-{end}",
-        "{white}---.-{white}/----{end}{end}",
+        "{white}CHG CODE{end}",
+        "{white}{green}{big}00{end}{end}{small}WPTS{end} {green}{big}00{end}{end}{small}NAVS{end}{end}",
+        ""
+      ],
+      [
+        "{inop}{small}[  ]{end}{end}",
+        "{white}{cyan}DELETE ALL}{end}{end}",
+        ""
+      ],
+      [
+        "{white}IDLE/PERF{end}",
+        "{white}SOFTWARE{end}",
+        ""
+      ],
+      [
+        "{green}+0.0/+0.0{end}",
+        "{inop}STATUS/XLOAD>{end}",
         ""
       ]
     ],
     "scratchpad": "{white}{end}",
-    "title": "{white}FUEL PRED{end}",
+    "title": "{white}A320-200{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [

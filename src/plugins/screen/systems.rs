@@ -120,22 +120,22 @@ fn build_text_sections(
     let mut text_sections: Vec<TextSection> = Vec::new();
 
     for TextSegment { formatters, value } in parsed_text {
-        let mut font_name = "HoneywellMCDU.ttf";
+        let mut font_name = if is_label {
+            "HoneywellMCDUSmall.ttf"
+        } else {
+            "HoneywellMCDU.ttf"
+        };
         let mut color = Color::rgb_u8(0xff, 0xff, 0xff);
 
         for formatter in formatters {
             // TODO: Handle AlignLeft, AlignRight
 
             // Extract which font to use
-            if is_label {
-                font_name = "HoneywellMCDUSmall.ttf";
-            } else {
-                font_name = match formatter {
-                    TextFormatter::FontBig => "HoneywellMCDU.ttf",
-                    TextFormatter::FontSmall => "HoneywellMCDUSmall.ttf",
-                    _ => font_name,
-                }
-            }
+            font_name = match formatter {
+                TextFormatter::FontBig => "HoneywellMCDU.ttf",
+                TextFormatter::FontSmall => "HoneywellMCDUSmall.ttf",
+                _ => font_name,
+            };
 
             // Extract which color to use
             color = match formatter {
