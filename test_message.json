@@ -2,70 +2,70 @@
   "right": {
     "lines": [
       [
-        "{white} ENG{end}",
+        "{white} FMC FLT NO{end}",
+        "{white}GMT {end}",
+        ""
+      ],
+      [
+        "{amber}_______{end}",
+        "{green}{small}2029{end}{end}",
+        ""
+      ],
+      [
+        "{white} DEP{end}",
         "",
         ""
       ],
       [
-        "{green}LEAP-1A26{end}",
+        "{amber}____{end}",
         "",
         ""
       ],
       [
-        "{white} ACTIVE NAV DATA BASE{end}",
+        "{white} DEST{end}",
         "",
         ""
       ],
       [
-        "{cyan} 16JUN-13JUL{end}",
-        "{green}AIRAC{end}",
+        "{amber}____{end}",
+        "{inop}CREW DETAILS>{end}",
         ""
       ],
       [
-        "{white} SECOND NAV DATA BASE{end}",
+        "{white} FOB{end}",
         "",
         ""
       ],
       [
-        "{inop}{small}{19MAY-15JUN{end}{end}",
+        "{green}   {small}4.0{end}{end}",
         "",
         ""
       ],
       [
+        "{white} ETE{end}",
         "",
-        "{white}STORED    {end}",
+        ""
+      ],
+      [
+        "{amber}____{end}",
+        "{cyan}INIT DATA REQ*{end}",
         ""
       ],
       [
         "",
-        "{white}{green}00{end}{small}RTES{end} {green}00{end}{small}RWYS{end}{end}",
+        "{white}ADVISORY {end}",
         ""
       ],
       [
-        "{white}CHG CODE{end}",
-        "{white}{green}{big}00{end}{end}{small}WPTS{end} {green}{big}00{end}{end}{small}NAVS{end}{end}",
-        ""
-      ],
-      [
-        "{inop}{small}[  ]{end}{end}",
-        "{white}{cyan}DELETE ALL}{end}{end}",
-        ""
-      ],
-      [
-        "{white}IDLE/PERF{end}",
-        "{white}SOFTWARE{end}",
-        ""
-      ],
-      [
-        "{green}+0.0/+0.0{end}",
-        "{inop}STATUS/XLOAD>{end}",
+        "{white}<AOC MENU{end}",
+        "",
         ""
       ]
     ],
-    "scratchpad": "{white}{end}",
-    "title": "{white}A320-200{end}",
-    "titleLeft": "{small}{end}",
-    "page": "",
+    "scratchpad": "{white}GPS PRIMARY{end}",
+    "title": "{white}INIT/REVIEW{end}",
+    "titleLeft": "{small}{white}AOC{end}{end}",
+    "page": "{small}1/2{end}",
     "arrows": [
       false,
       false,
@@ -76,70 +76,70 @@
   "left": {
     "lines": [
       [
-        "{white} ENG{end}",
+        "{white} FMC FLT NO{end}",
+        "{white}GMT {end}",
+        ""
+      ],
+      [
+        "{amber}_______{end}",
+        "{green}{small}2029{end}{end}",
+        ""
+      ],
+      [
+        "{white} DEP{end}",
         "",
         ""
       ],
       [
-        "{green}LEAP-1A26{end}",
+        "{amber}____{end}",
         "",
         ""
       ],
       [
-        "{white} ACTIVE NAV DATA BASE{end}",
+        "{white} DEST{end}",
         "",
         ""
       ],
       [
-        "{cyan} 16JUN-13JUL{end}",
-        "{green}AIRAC{end}",
+        "{amber}____{end}",
+        "{inop}CREW DETAILS>{end}",
         ""
       ],
       [
-        "{white} SECOND NAV DATA BASE{end}",
+        "{white} FOB{end}",
         "",
         ""
       ],
       [
-        "{inop}{small}{19MAY-15JUN{end}{end}",
+        "{green}   {small}4.0{end}{end}",
         "",
         ""
       ],
       [
+        "{white} ETE{end}",
         "",
-        "{white}STORED    {end}",
+        ""
+      ],
+      [
+        "{amber}____{end}",
+        "{cyan}INIT DATA REQ*{end}",
         ""
       ],
       [
         "",
-        "{white}{green}00{end}{small}RTES{end} {green}00{end}{small}RWYS{end}{end}",
+        "{white}ADVISORY {end}",
         ""
       ],
       [
-        "{white}CHG CODE{end}",
-        "{white}{green}{big}00{end}{end}{small}WPTS{end} {green}{big}00{end}{end}{small}NAVS{end}{end}",
-        ""
-      ],
-      [
-        "{inop}{small}[  ]{end}{end}",
-        "{white}{cyan}DELETE ALL}{end}{end}",
-        ""
-      ],
-      [
-        "{white}IDLE/PERF{end}",
-        "{white}SOFTWARE{end}",
-        ""
-      ],
-      [
-        "{green}+0.0/+0.0{end}",
-        "{inop}STATUS/XLOAD>{end}",
+        "{white}<AOC MENU{end}",
+        "",
         ""
       ]
     ],
-    "scratchpad": "{white}{end}",
-    "title": "{white}A320-200{end}",
-    "titleLeft": "{small}{end}",
-    "page": "",
+    "scratchpad": "{white}GPS PRIMARY{end}",
+    "title": "{white}INIT/REVIEW{end}",
+    "titleLeft": "{small}{white}AOC{end}{end}",
+    "page": "{small}1/2{end}",
     "arrows": [
       false,
       false,

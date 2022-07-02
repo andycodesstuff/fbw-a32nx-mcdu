@@ -8,6 +8,8 @@ use crate::{
 use bevy::prelude::*;
 use rand::Rng;
 
+use super::components::Scratchpad;
+
 /// Set-ups the UI hierarchy of the MCDU and the elements that will be populated with data
 pub fn setup(mut commands: Commands) {
     let row_height = 100.0 / (SCREEN_ROWS as f32);
@@ -29,8 +31,8 @@ pub fn setup(mut commands: Commands) {
         .id();
 
     // Screen rows
-    for row_index in 0..(SCREEN_ROWS - 2) {
-        let is_label = row_index % 2 == 0;
+    for row_index in 0..SCREEN_ROWS {
+        let is_label = row_index % 2 != 0;
 
         // Screen columns
         for col_index in 0..3 {
@@ -68,17 +70,29 @@ pub fn setup(mut commands: Commands) {
                     ..default()
                 })
                 .with_children(|parent| {
-                    parent
-                        .spawn_bundle(TextBundle {
-                            style: Style {
-                                // I have no idea why specifying an aspect ratio aligns the
-                                // content properly but yeah, here it is
-                                aspect_ratio: Some(1.0),
-                                ..default()
-                            },
+                    let mut text_cell = parent.spawn_bundle(TextBundle {
+                        style: Style {
+                            // I have no idea why specifying an aspect ratio aligns the
+                            // content properly but yeah, here it is
+                            aspect_ratio: Some(1.0),
                             ..default()
-                        })
-                        .insert(Cell::new(row_index, col_index, is_label));
+                        },
+                        ..default()
+                    });
+
+                    if row_index == 0 {
+                        // Title row
+                    } else if row_index == SCREEN_ROWS - 1 {
+                        // Scratchpad row
+                        match col_index {
+                            #[rustfmt::skip]
+                            0 => { text_cell.insert(Scratchpad); }
+                            _ => {}
+                        };
+                    } else {
+                        // Content rows
+                        text_cell.insert(Cell::new(row_index - 1, col_index, is_label));
+                    }
                 })
                 .insert(Parent(screen));
         }
@@ -87,7 +101,8 @@ pub fn setup(mut commands: Commands) {
 
 /// Updates the UI of the MCDU screen with the data coming from the simulator
 pub fn update_screen(
-    mut q: Query<(&Cell, &mut Text)>,
+    mut cells_q: Query<(&Cell, &mut Text), With<Cell>>,
+    mut scratchpad_q: Query<&mut Text, (Without<Cell>, With<Scratchpad>)>,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
     windows: Res<Windows>,
@@ -97,17 +112,26 @@ pub fn update_screen(
         let window = windows.get_primary().unwrap();
         let window_height = window.height();
 
-        for (cell, mut text) in q.iter_mut() {
-            // Update the text cells' content
+        // Compute the base font size for any text
+        let font_size = (window_height - SCREEN_PADDING * 3.5) / (SCREEN_ROWS as f32);
+
+        // Update the screen's content
+        for (cell, mut text) in cells_q.iter_mut() {
             let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
             text.sections = build_text_sections(parsed_text, cell.is_label, &asset_server);
-
-            // Update the text cells' size
-            let font_size = (window_height - SCREEN_PADDING * 3.5) / (SCREEN_ROWS as f32);
             text.sections
                 .iter_mut()
                 .for_each(|section| section.style.font_size = font_size);
         }
+
+        // Update the scratchpad
+        let mut scratchpad_text = scratchpad_q.get_single_mut().unwrap();
+        scratchpad_text.sections =
+            build_text_sections(&screen_update.scratchpad, false, &asset_server);
+        scratchpad_text
+            .sections
+            .iter_mut()
+            .for_each(|section| section.style.font_size = font_size);
     }
 }
 

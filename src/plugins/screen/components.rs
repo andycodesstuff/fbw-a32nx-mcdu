@@ -46,3 +46,7 @@ impl Cell {
         }
     }
 }
+
+/// Describes the state of the MCDU's scratchpad
+#[derive(Component, Inspectable)]
+pub struct Scratchpad;
