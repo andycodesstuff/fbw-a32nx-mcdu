@@ -12,6 +12,9 @@ use tokio::{
 use tokio_tungstenite::tungstenite::Message;
 use unicode_segmentation::UnicodeSegmentation;
 
+const FORMATTERS: &str =
+    r"\{(?P<formatter>left|right|amber|cyan|green|inop|magenta|red|white|yellow|big|small|end)\}";
+const SPACE_FORMATTER: &str = r"\{sp\}";
 pub const WS_SERVER_ADDR: &str = "127.0.0.1:8380";
 
 /// Set-ups the WebSocket server to accept connections
@@ -136,8 +139,9 @@ fn parse_json_msg(json: &str) -> Option<ScreenState> {
 
 /// Parses the formatter tags used by the FlyByWire's A32NX mod
 fn parse_raw_text(raw_text: String) -> ParsedText {
-    let formatter_re = Regex::new(r"^(\{(?P<formatter>[a-zA-Z]+)\}(?P<rest>.*))").unwrap();
-    let space_formatter_re = Regex::new(r"\{sp\}").unwrap();
+    let formatter_begin_re = Regex::new(format!("^({FORMATTERS}(?P<rest>.*))").as_str()).unwrap();
+    let formatter_end_re = Regex::new(format!("(?P<rest>.*?){FORMATTERS}").as_str()).unwrap();
+    let space_formatter_re = Regex::new(SPACE_FORMATTER).unwrap();
 
     let mut formatters_stack: Vec<TextFormatter> = Vec::new();
     let mut result: ParsedText = Vec::new();
@@ -149,7 +153,7 @@ fn parse_raw_text(raw_text: String) -> ParsedText {
         .to_string();
 
     while current_text.graphemes(true).count() > 0 {
-        match formatter_re.captures(current_text.as_str()) {
+        match formatter_begin_re.captures(current_text.as_str()) {
             Some(captures) => {
                 // Split the formatter from the rest of the string
                 let formatter = TextFormatter::from_str(&captures["formatter"]);
@@ -166,14 +170,16 @@ fn parse_raw_text(raw_text: String) -> ParsedText {
                 current_text = rest.to_string();
             }
             None => {
-                // Extract the content of the text section
-                let value: String = current_text
-                    .graphemes(true)
-                    .take_while(|c| *c != "{")
-                    .collect();
-                let value_len: usize = value.graphemes(true).map(|c| c.bytes().count()).sum();
+                let mut value: String = String::from("");
+                let mut value_len: usize = 0;
 
-                // Save the text section
+                // Extract the content of the text segment
+                if let Some(captures) = formatter_end_re.captures(current_text.as_str()) {
+                    value = captures["rest"].to_string();
+                    value_len = value.graphemes(true).map(|c| c.bytes().count()).sum();
+                }
+
+                // Save the text segment
                 result.push(TextSegment {
                     formatters: formatters_stack.clone(),
                     value: value,
