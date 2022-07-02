@@ -2,68 +2,68 @@
   "right": {
     "lines": [
       [
-        "{white} V1  FLP RETR{end}",
+        "{white} AT{end}",
+        "{white}EFOB{end}",
+        "{white}TIME{end}"
+      ],
+      [
+        "{green}NONE{end}",
+        "{white}---.-{end}",
+        "{white}----{end}"
+      ],
+      [
+        "",
         "",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} F={green}131{end}{end}",
-        "",
+        "{green}NONE{end}",
+        "{white}---.-{end}",
+        "{white}----{end}"
+      ],
+      [
+        "{white}RTE RSV/%{end}",
+        "{white}ZFW/ZFWCG{end}",
         ""
       ],
       [
-        "{white} VR  SLT RETR{end}",
-        "{white}TO SHIFT {end}",
+        "{white}---.-{white}/---.-{end}{end}",
+        "{cyan}42.5/25.0{end}",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} S={green}163{end}{end}",
-        "{white}{inop}----{end} {end}",
+        "{white}ALTN  /TIME{end}",
+        "{white}FOB{sp}{sp}{sp}{sp}{sp}{end}",
         ""
       ],
       [
-        "{white} V2     CLEAN{end}",
-        "{white}FLAPS/THS{end}",
+        "{white}---.-{white}/----{end}{end}",
+        "{cyan}{small}3.9{end}/{inop}FF{end}{sp}{sp}{end}",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} O={green}178{end}{end}",
-        "{cyan}[]/[   ]{end}",
+        "{white}FINAL /TIME{end}",
+        "{white}GW/{sp}{sp} CG{end}",
         ""
       ],
       [
-        "{white}TRANS ALT{end}",
-        "{white}FLEX TO TEMP{end}",
+        "{white}---.-/----{end}",
+        "{green}{small}46.4/  25.6{end}{end}",
         ""
       ],
       [
-        "{white}{cyan}{end}{end}",
-        "{cyan}[  ]°{end}",
+        "{white}MIN DEST FOB{end}",
+        "{white}EXTRA TIME{end}",
         ""
       ],
       [
-        "{white}THR RED/ACC{end}",
-        "{white}ENG OUT ACC{end}",
-        ""
-      ],
-      [
-        "{white}-----/-----{end}",
-        "{white}-----{end}",
-        ""
-      ],
-      [
-        "{inop} UPLINK{end}",
-        "{white}NEXT {end}",
-        ""
-      ],
-      [
-        "{inop}<TO DATA{end}",
-        "{white}PHASE>{end}",
+        "{white}---.-{end}",
+        "{white}---.-{white}/----{end}{end}",
         ""
       ]
     ],
-    "scratchpad": "{white}GPS PRIMARY{end}",
-    "title": "{white}TAKE OFF RWY {green}   {end}{end}",
+    "scratchpad": "{white}{end}",
+    "title": "{white}FUEL PRED{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [
@@ -76,68 +76,68 @@
   "left": {
     "lines": [
       [
-        "{white} V1  FLP RETR{end}",
+        "{white} AT{end}",
+        "{white}EFOB{end}",
+        "{white}TIME{end}"
+      ],
+      [
+        "{green}NONE{end}",
+        "{white}---.-{end}",
+        "{white}----{end}"
+      ],
+      [
+        "",
         "",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} F={green}131{end}{end}",
-        "",
+        "{green}NONE{end}",
+        "{white}---.-{end}",
+        "{white}----{end}"
+      ],
+      [
+        "{white}RTE RSV/%{end}",
+        "{white}ZFW/ZFWCG{end}",
         ""
       ],
       [
-        "{white} VR  SLT RETR{end}",
-        "{white}TO SHIFT {end}",
+        "{white}---.-{white}/---.-{end}{end}",
+        "{cyan}42.5/25.0{end}",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} S={green}163{end}{end}",
-        "{white}{inop}----{end} {end}",
+        "{white}ALTN  /TIME{end}",
+        "{white}FOB{sp}{sp}{sp}{sp}{sp}{end}",
         ""
       ],
       [
-        "{white} V2     CLEAN{end}",
-        "{white}FLAPS/THS{end}",
+        "{white}---.-{white}/----{end}{end}",
+        "{cyan}{small}3.9{end}/{inop}FF{end}{sp}{sp}{end}",
         ""
       ],
       [
-        "{white}{amber}___{end}{small}   {end} O={green}178{end}{end}",
-        "{cyan}[]/[   ]{end}",
+        "{white}FINAL /TIME{end}",
+        "{white}GW/{sp}{sp} CG{end}",
         ""
       ],
       [
-        "{white}TRANS ALT{end}",
-        "{white}FLEX TO TEMP{end}",
+        "{white}---.-/----{end}",
+        "{green}{small}46.4/  25.6{end}{end}",
         ""
       ],
       [
-        "{white}{cyan}{end}{end}",
-        "{cyan}[  ]°{end}",
+        "{white}MIN DEST FOB{end}",
+        "{white}EXTRA TIME{end}",
         ""
       ],
       [
-        "{white}THR RED/ACC{end}",
-        "{white}ENG OUT ACC{end}",
-        ""
-      ],
-      [
-        "{white}-----/-----{end}",
-        "{white}-----{end}",
-        ""
-      ],
-      [
-        "{inop} UPLINK{end}",
-        "{white}NEXT {end}",
-        ""
-      ],
-      [
-        "{inop}<TO DATA{end}",
-        "{white}PHASE>{end}",
+        "{white}---.-{end}",
+        "{white}---.-{white}/----{end}{end}",
         ""
       ]
     ],
-    "scratchpad": "{white}GPS PRIMARY{end}",
-    "title": "{white}TAKE OFF RWY {green}   {end}{end}",
+    "scratchpad": "{white}{end}",
+    "title": "{white}FUEL PRED{end}",
     "titleLeft": "{small}{end}",
     "page": "",
     "arrows": [

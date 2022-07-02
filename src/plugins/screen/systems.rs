@@ -132,7 +132,7 @@ fn build_text_sections(
 
             // Consume the stack of formatters
             for formatter in vertex.formatters.iter().rev() {
-                // TODO: Handle AlignLeft, AlignRight, Space
+                // TODO: Handle AlignLeft, AlignRight
 
                 // Extract which font to use
                 if is_label {

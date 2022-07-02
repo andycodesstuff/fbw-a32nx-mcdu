@@ -150,6 +150,10 @@ fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
     let mut graph: Graph<String, TextVertex, bool> = Graph::new();
     graph.push_vertex(current_parent.clone(), TextVertex::default());
 
+    // Escape all {sp} self-closing tags with a whitespace
+    let space_formatter_re = Regex::new(r"\{sp\}").unwrap();
+    current_text = space_formatter_re.replace_all(current_text.as_str(), " ").to_string();
+
     while current_text.graphemes(true).count() > 0 {
         // Look for the beginning of a formatter tag
         let formatter_re = Regex::new(r"^(\{(?P<formatter>[a-zA-Z]+)\}(?P<rest>.*))").unwrap();
