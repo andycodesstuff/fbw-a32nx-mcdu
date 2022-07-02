@@ -1,9 +1,6 @@
 pub mod systems;
 
-use crate::{
-    plugins::server::systems::{events_relay, setup},
-    utils::graph::Graph,
-};
+use crate::plugins::server::systems::{events_relay, setup};
 use bevy::prelude::*;
 use crossbeam_channel::Receiver;
 use serde::Deserialize;
@@ -18,25 +15,14 @@ pub struct ScreenUpdate {
     pub arrows: Vec<bool>,
 }
 
-/// A parsed text is a tree-like representation (similar to the DOM) that describes how text
-/// should be segmented in sections, each with their formatting and content
-type ParsedText = Graph<String, TextVertex, bool>;
+/// Describes how text should be segmented into sections, each with their owm formatting and
+/// content
+pub type ParsedText = Vec<TextSegment>;
 
-#[derive(Debug, Hash)]
-pub struct TextVertex {
+#[derive(Debug)]
+pub struct TextSegment {
     pub formatters: Vec<TextFormatter>,
-    pub value: Option<String>,
-    pub position: i32,
-}
-
-impl Default for TextVertex {
-    fn default() -> Self {
-        TextVertex {
-            formatters: Vec::new(),
-            value: None,
-            position: -1,
-        }
-    }
+    pub value: String,
 }
 
 /// Represents the various text formatters that can be used on the MCDU screen

@@ -1,8 +1,5 @@
-use super::{ScreenState, ScreenUpdateReceiver, TextFormatter, TextVertex};
-use crate::{
-    plugins::server::{ScreenUpdate, ScreenUpdateEvent, ScreenUpdateMessage},
-    utils::graph::Graph,
-};
+use super::{ParsedText, ScreenState, ScreenUpdateReceiver, TextFormatter, TextSegment};
+use crate::plugins::server::{ScreenUpdate, ScreenUpdateEvent, ScreenUpdateMessage};
 use bevy::prelude::*;
 use crossbeam_channel::{unbounded, Sender};
 use futures_util::{future, StreamExt, TryStreamExt};
@@ -14,7 +11,6 @@ use tokio::{
 };
 use tokio_tungstenite::tungstenite::Message;
 use unicode_segmentation::UnicodeSegmentation;
-use uuid::Uuid;
 
 pub const WS_SERVER_ADDR: &str = "127.0.0.1:8380";
 
@@ -115,7 +111,7 @@ fn handle_update_command(tx: Sender<ScreenUpdate>, data: Option<&str>) {
                 let mut line = line
                     .iter()
                     .map(|section| parse_raw_text(section.clone()))
-                    .collect::<Vec<Graph<String, TextVertex, bool>>>();
+                    .collect::<Vec<ParsedText>>();
                 line.swap(1, 2);
 
                 line
@@ -138,85 +134,62 @@ fn parse_json_msg(json: &str) -> Option<ScreenState> {
     }
 }
 
-/// Parses the formatter tags used by the FlyByWire's A32NX mod and returns a tree-like
-/// representation of how text should be segmented in sections, each with their formatting and
-/// content
-fn parse_raw_text(raw_text: String) -> Graph<String, TextVertex, bool> {
-    let mut current_text: String = raw_text;
-    let mut current_parent: String = "root".to_string();
-    let mut position = 0;
+/// Parses the formatter tags used by the FlyByWire's A32NX mod
+fn parse_raw_text(raw_text: String) -> ParsedText {
+    let formatter_re = Regex::new(r"^(\{(?P<formatter>[a-zA-Z]+)\}(?P<rest>.*))").unwrap();
+    let space_formatter_re = Regex::new(r"\{sp\}").unwrap();
 
-    // Create a new graph with a single node to use as root
-    let mut graph: Graph<String, TextVertex, bool> = Graph::new();
-    graph.push_vertex(current_parent.clone(), TextVertex::default());
+    let mut formatters_stack: Vec<TextFormatter> = Vec::new();
+    let mut result: ParsedText = Vec::new();
+    let mut current_text: String = raw_text;
 
     // Escape all {sp} self-closing tags with a whitespace
-    let space_formatter_re = Regex::new(r"\{sp\}").unwrap();
-    current_text = space_formatter_re.replace_all(current_text.as_str(), " ").to_string();
+    current_text = space_formatter_re
+        .replace_all(current_text.as_str(), " ")
+        .to_string();
 
     while current_text.graphemes(true).count() > 0 {
-        // Look for the beginning of a formatter tag
-        let formatter_re = Regex::new(r"^(\{(?P<formatter>[a-zA-Z]+)\}(?P<rest>.*))").unwrap();
         match formatter_re.captures(current_text.as_str()) {
             Some(captures) => {
                 // Split the formatter from the rest of the string
                 let formatter = TextFormatter::from_str(&captures["formatter"]);
                 let rest = &captures["rest"];
 
-                // Update current references and skip to the next iteration if end tag is found
+                // Push or pop the stack based on the formatter found
                 if formatter == TextFormatter::End {
-                    current_text = rest.to_string();
-                    current_parent = graph.get_parent(current_parent.clone()).unwrap();
-                    continue;
+                    formatters_stack.pop();
+                } else {
+                    formatters_stack.push(formatter);
                 }
 
-                // Create a new vertex
-                let vertex_id = Uuid::new_v4().to_string();
-                let mut vertex = TextVertex {
-                    formatters: vec![formatter],
-                    value: None,
-                    ..default()
-                };
-
-                // Inherit formatters from parent node
-                if let Some(parent) = graph.get_vertex(current_parent.clone()) {
-                    for formatter in parent.formatters.iter() {
-                        vertex.formatters.push(formatter.clone());
-                    }
-                }
-
-                // Register the vertex and its edges
-                graph.push_vertex(vertex_id.clone(), vertex);
-                graph.push_edge(current_parent.clone(), vertex_id.clone(), false);
-                graph.push_edge(vertex_id.clone(), current_parent.clone(), true);
-
+                // Process the rest of the text
                 current_text = rest.to_string();
-                current_parent = vertex_id;
             }
             None => {
-                // Extract the text to associate to the vertex that is currently being parsed
+                // Extract the content of the text section
                 let value: String = current_text
                     .graphemes(true)
                     .take_while(|c| *c != "{")
                     .collect();
                 let value_len: usize = value.graphemes(true).map(|c| c.bytes().count()).sum();
 
-                // Update the vertex
-                let mut vertex = graph.get_vertex_mut(current_parent.clone()).unwrap();
-                vertex.value = Some(value);
-                vertex.position = position;
-                position += 1;
+                // Save the text section
+                result.push(TextSegment {
+                    formatters: formatters_stack.clone(),
+                    value: value,
+                });
 
-                // Continue parsing after the text that has just been extracted
-                let section = &current_text[(if value_len > 0 { value_len } else { 0 })..];
-                current_text = section.to_string();
+                // Process the rest of the text
+                let next_text = &current_text[(if value_len > 0 { value_len } else { 0 })..];
+                current_text = next_text.to_string();
             }
         }
     }
 
-    graph
+    result
 }
 
+#[allow(dead_code)]
 fn load_test_message(tx: Sender<ScreenUpdate>) {
     let path = "test_message.json";
     let json_msg = fs::read_to_string(path).unwrap();

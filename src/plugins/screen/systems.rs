@@ -1,9 +1,8 @@
 use crate::{
     plugins::{
         screen::{components::Cell, components::Screen},
-        server::{ScreenUpdateEvent, TextFormatter, TextVertex},
+        server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
-    utils::graph::Graph,
     SCREEN_PADDING, SCREEN_ROWS,
 };
 use bevy::prelude::*;
@@ -112,62 +111,54 @@ pub fn update_screen(
     }
 }
 
-/// Builds the text sections of a Text component given a tree-like representation of how
-/// text should be segmented and styled
+/// Builds the text sections of a Text component given how text should be segmented and styled
 fn build_text_sections(
-    parsed_text: &Graph<String, TextVertex, bool>,
+    parsed_text: &ParsedText,
     is_label: bool,
     asset_server: &Res<AssetServer>,
 ) -> Vec<TextSection> {
     let mut text_sections: Vec<TextSection> = Vec::new();
 
-    // Sort the vertices according to the order in which they have to be displayed
-    let mut vertices_sorted = parsed_text.vertices.iter().collect::<Vec<_>>();
-    vertices_sorted.sort_by(|a, b| a.1.position.cmp(&b.1.position));
+    for TextSegment { formatters, value } in parsed_text {
+        let mut font_name = "HoneywellMCDU.ttf";
+        let mut color = Color::rgb_u8(0xff, 0xff, 0xff);
 
-    for (vertex_id, _) in vertices_sorted.iter() {
-        if let Some(vertex) = parsed_text.get_vertex(vertex_id.to_string()) {
-            let mut font_name = "HoneywellMCDU.ttf";
-            let mut color = Color::rgb_u8(0xff, 0xff, 0xff);
+        for formatter in formatters {
+            // TODO: Handle AlignLeft, AlignRight
 
-            // Consume the stack of formatters
-            for formatter in vertex.formatters.iter().rev() {
-                // TODO: Handle AlignLeft, AlignRight
-
-                // Extract which font to use
-                if is_label {
-                    font_name = "HoneywellMCDUSmall.ttf";
-                } else {
-                    font_name = match formatter {
-                        TextFormatter::FontBig => "HoneywellMCDU.ttf",
-                        TextFormatter::FontSmall => "HoneywellMCDUSmall.ttf",
-                        _ => font_name,
-                    }
+            // Extract which font to use
+            if is_label {
+                font_name = "HoneywellMCDUSmall.ttf";
+            } else {
+                font_name = match formatter {
+                    TextFormatter::FontBig => "HoneywellMCDU.ttf",
+                    TextFormatter::FontSmall => "HoneywellMCDUSmall.ttf",
+                    _ => font_name,
                 }
-
-                // Extract which color to use
-                color = match formatter {
-                    TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
-                    TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
-                    TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
-                    TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
-                    TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
-                    TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
-                    TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
-                    TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
-                    _ => color,
-                };
             }
 
-            text_sections.push(TextSection {
-                value: vertex.value.clone().unwrap_or("".to_string()),
-                style: TextStyle {
-                    font: asset_server.load(font_name),
-                    font_size: 0.0,
-                    color,
-                },
-            });
+            // Extract which color to use
+            color = match formatter {
+                TextFormatter::ColorAmber => Color::rgb_u8(0xff, 0x9a, 0x00),
+                TextFormatter::ColorCyan => Color::rgb_u8(0x00, 0xff, 0xff),
+                TextFormatter::ColorGreen => Color::rgb_u8(0x00, 0xff, 0x00),
+                TextFormatter::ColorInop => Color::rgb_u8(0x66, 0x66, 0x66),
+                TextFormatter::ColorMagenta => Color::rgb_u8(0xff, 0x94, 0xff),
+                TextFormatter::ColorRed => Color::rgb_u8(0xff, 0x00, 0x00),
+                TextFormatter::ColorWhite => Color::rgb_u8(0xff, 0xff, 0xff),
+                TextFormatter::ColorYellow => Color::rgb_u8(0xff, 0xff, 0x00),
+                _ => color,
+            };
         }
+
+        text_sections.push(TextSection {
+            value: value.clone(),
+            style: TextStyle {
+                font: asset_server.load(font_name),
+                font_size: 0.0,
+                color,
+            },
+        });
     }
 
     text_sections

@@ -1,5 +1,4 @@
 mod plugins;
-mod utils;
 
 use crate::plugins::{screen::ScreenPlugin, server::ServerPlugin};
 use bevy::prelude::*;
