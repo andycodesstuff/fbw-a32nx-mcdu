@@ -73,10 +73,10 @@ async fn handle_connection(stream: TcpStream, tx: Sender<ScreenUpdate>) {
             // Extract the command and (optional) data from the message sent by the MCDU
             let mut sections = msg.splitn(2, ":").collect::<VecDeque<&str>>();
             let (_command, data) = (sections.pop_front(), sections.pop_back());
-            info!("MCDU message: {:?}", _command);
 
             // Handle commands
             if let Some(command) = _command {
+                info!("MCDU message: {:?}", command);
                 match command {
                     "update" => handle_update_command(tx.clone(), data),
                     _ => {}

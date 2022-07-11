@@ -1,6 +1,6 @@
 use crate::{
     plugins::{
-        screen::components::{Cell, LeftTitle, Scratchpad, Screen},
+        screen::components::{LeftTitle, MainContentCell, Scratchpad},
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
     SCREEN_PADDING, SCREEN_ROWS,
@@ -25,7 +25,6 @@ pub fn setup(mut commands: Commands) {
             color: UiColor(Color::rgb_u8(0x0d, 0x14, 0x23)),
             ..default()
         })
-        .insert(Screen::default())
         .id();
 
     // Screen rows
@@ -94,7 +93,7 @@ pub fn setup(mut commands: Commands) {
                         };
                     } else {
                         // Content rows
-                        text_cell.insert(Cell::new(row_index - 1, col_index, is_label));
+                        text_cell.insert(MainContentCell::new(row_index - 1, col_index, is_label));
                     }
                 })
                 .insert(Parent(screen));
@@ -102,42 +101,11 @@ pub fn setup(mut commands: Commands) {
     }
 }
 
-/// Updates the UI of the MCDU screen with the data coming from the simulator
-pub fn update_screen(
-    mut cells_q: Query<(&Cell, &mut Text), With<Cell>>,
-    mut scratchpad_q: Query<&mut Text, (Without<Cell>, With<Scratchpad>)>,
-    mut events: EventReader<ScreenUpdateEvent>,
-    asset_server: Res<AssetServer>,
-    windows: Res<Windows>,
-) {
-    for screen_update_event in events.iter() {
-        let screen_update = &screen_update_event.0;
-        let window = windows.get_primary().unwrap();
-        let window_height = window.height();
-
-        // Compute the base font size for any text
-        let font_size = (window_height - SCREEN_PADDING * 3.5) / (SCREEN_ROWS as f32);
-
-        // Update the screen's content
-        for (cell, mut text) in cells_q.iter_mut() {
-            let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
-            text.sections = build_text_sections(parsed_text, cell.is_label, &asset_server);
-            text.sections
-                .iter_mut()
-                .for_each(|section| section.style.font_size = font_size);
-        }
-
-        // Update the scratchpad
-        let mut scratchpad_text = scratchpad_q.get_single_mut().unwrap();
-        scratchpad_text.sections =
-            build_text_sections(&screen_update.scratchpad, false, &asset_server);
-        scratchpad_text
-            .sections
-            .iter_mut()
-            .for_each(|section| section.style.font_size = font_size);
-    }
-}
-
+/**
+ * A family of function to update the UI of the MCDU screen with the data coming from the
+ * simulator
+ */
+/// Updates the header section of the MCDU screen
 pub fn update_screen_header(
     mut left_title_q: Query<&mut Text, With<LeftTitle>>,
     mut events: EventReader<ScreenUpdateEvent>,
@@ -153,6 +121,45 @@ pub fn update_screen_header(
         left_title_text.sections =
             build_text_sections(&screen_update.title_left, false, &asset_server);
         apply_font_size(&mut left_title_text, window);
+    }
+}
+
+/// Updates the main content of the MCDU screen
+pub fn update_screen_main_content(
+    mut cells_q: Query<(&MainContentCell, &mut Text), With<MainContentCell>>,
+    mut events: EventReader<ScreenUpdateEvent>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let screen_update = &screen_update_event.0;
+        let window = windows.get_primary().unwrap();
+
+        // Update the screen's main content
+        for (cell, mut text) in cells_q.iter_mut() {
+            let parsed_text = &screen_update.lines[cell.row_index][cell.col_index];
+            text.sections = build_text_sections(parsed_text, cell.is_label, &asset_server);
+            apply_font_size(&mut text, window);
+        }
+    }
+}
+
+/// Updates the scratchpad section of the MCDU screen
+pub fn update_screen_scratchpad(
+    mut scratchpad_q: Query<&mut Text, With<Scratchpad>>,
+    mut events: EventReader<ScreenUpdateEvent>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let screen_update = &screen_update_event.0;
+        let window = windows.get_primary().unwrap();
+
+        // Update the scratchpad
+        let mut scratchpad_text = scratchpad_q.get_single_mut().unwrap();
+        scratchpad_text.sections =
+            build_text_sections(&screen_update.scratchpad, false, &asset_server);
+        apply_font_size(&mut scratchpad_text, window);
     }
 }
 
