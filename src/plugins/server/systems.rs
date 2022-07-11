@@ -123,6 +123,7 @@ fn handle_update_command(tx: Sender<ScreenUpdate>, data: Option<&str>) {
         scratchpad: parse_raw_text(raw_screen_update.scratchpad),
         title: parse_raw_text(raw_screen_update.title),
         title_left: parse_raw_text(raw_screen_update.title_left),
+        page: parse_raw_text(raw_screen_update.page),
         arrows: raw_screen_update.arrows,
     };
 

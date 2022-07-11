@@ -1,6 +1,6 @@
 use crate::{
     plugins::{
-        screen::components::{LeftTitle, MainContentCell, PageTitle, Scratchpad},
+        screen::components::{LeftTitle, MainContentCell, PageIndicator, PageTitle, Scratchpad},
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
     SCREEN_PADDING, SCREEN_ROWS,
@@ -84,6 +84,8 @@ pub fn setup(mut commands: Commands) {
                             0 => { text_cell.insert(LeftTitle); }
                             #[rustfmt::skip]
                             1 => { text_cell.insert(PageTitle); }
+                            #[rustfmt::skip]
+                            2 => { text_cell.insert(PageIndicator); }
                             _ => {}
                         };
                     } else if row_index == SCREEN_ROWS - 1 {
@@ -109,8 +111,18 @@ pub fn setup(mut commands: Commands) {
  */
 /// Updates the header section of the MCDU screen
 pub fn update_screen_header(
-    mut page_title_q: Query<&mut Text, (With<PageTitle>, Without<LeftTitle>)>,
-    mut left_title_q: Query<&mut Text, (With<LeftTitle>, Without<PageTitle>)>,
+    mut page_title_q: Query<
+        &mut Text,
+        (With<PageTitle>, Without<PageIndicator>, Without<LeftTitle>),
+    >,
+    mut page_indicator_q: Query<
+        &mut Text,
+        (With<PageIndicator>, Without<PageTitle>, Without<LeftTitle>),
+    >,
+    mut left_title_q: Query<
+        &mut Text,
+        (With<LeftTitle>, Without<PageTitle>, Without<PageIndicator>),
+    >,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
     windows: Res<Windows>,
@@ -123,6 +135,11 @@ pub fn update_screen_header(
         let mut page_title_text = page_title_q.get_single_mut().unwrap();
         page_title_text.sections = build_text_sections(&screen_update.title, false, &asset_server);
         apply_font_size(&mut page_title_text, window);
+
+        // Update the page indicator
+        let mut page_indicator_text = page_indicator_q.get_single_mut().unwrap();
+        page_indicator_text.sections = build_text_sections(&screen_update.page, false, &asset_server);
+        apply_font_size(&mut page_indicator_text, window);
 
         // Update the left title
         let mut left_title_text = left_title_q.get_single_mut().unwrap();

@@ -4,6 +4,10 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct PageTitle;
 
+/// Represents which page is currently being displayed on the MCDU
+#[derive(Component)]
+pub struct PageIndicator;
+
 /// Represents an additional title that might be displayed on the left of the main page title
 #[derive(Component)]
 pub struct LeftTitle;

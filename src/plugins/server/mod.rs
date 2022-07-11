@@ -12,6 +12,7 @@ pub struct ScreenUpdate {
     pub scratchpad: ParsedText,
     pub title: ParsedText,
     pub title_left: ParsedText,
+    pub page: ParsedText,
     pub arrows: Vec<bool>,
 }
 
@@ -84,6 +85,7 @@ struct ScreenState {
     title: String,
     #[serde(alias = "titleLeft")]
     title_left: String,
+    page: String,
     arrows: Vec<bool>,
 }
 
