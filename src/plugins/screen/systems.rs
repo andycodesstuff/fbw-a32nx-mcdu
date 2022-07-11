@@ -56,6 +56,7 @@ pub fn setup(mut commands: Commands) {
                             bottom: Val::Undefined,
                         },
                         size: Size::new(Val::Percent(100.0), Val::Percent(row_height)),
+                        overflow: Overflow::Hidden,
                         ..default()
                     },
                     color: UiColor(Color::rgba(
@@ -138,7 +139,8 @@ pub fn update_screen_header(
 
         // Update the page indicator
         let mut page_indicator_text = page_indicator_q.get_single_mut().unwrap();
-        page_indicator_text.sections = build_text_sections(&screen_update.page, false, &asset_server);
+        page_indicator_text.sections =
+            build_text_sections(&screen_update.page, false, &asset_server);
         apply_font_size(&mut page_indicator_text, window);
 
         // Update the left title
