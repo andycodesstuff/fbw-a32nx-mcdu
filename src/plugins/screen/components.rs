@@ -47,6 +47,10 @@ impl Cell {
     }
 }
 
+/// Describes the state of the MCDU's left title
+#[derive(Component)]
+pub struct LeftTitle;
+
 /// Describes the state of the MCDU's scratchpad
-#[derive(Component, Inspectable)]
+#[derive(Component)]
 pub struct Scratchpad;

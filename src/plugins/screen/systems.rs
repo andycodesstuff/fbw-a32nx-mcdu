@@ -1,14 +1,12 @@
 use crate::{
     plugins::{
-        screen::{components::Cell, components::Screen},
+        screen::components::{Cell, LeftTitle, Scratchpad, Screen},
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
     SCREEN_PADDING, SCREEN_ROWS,
 };
 use bevy::prelude::*;
 use rand::Rng;
-
-use super::components::Scratchpad;
 
 /// Set-ups the UI hierarchy of the MCDU and the elements that will be populated with data
 pub fn setup(mut commands: Commands) {
@@ -81,7 +79,12 @@ pub fn setup(mut commands: Commands) {
                     });
 
                     if row_index == 0 {
-                        // Title row
+                        // Header row
+                        match col_index {
+                            #[rustfmt::skip]
+                            0 => { text_cell.insert(LeftTitle); }
+                            _ => {}
+                        };
                     } else if row_index == SCREEN_ROWS - 1 {
                         // Scratchpad row
                         match col_index {
@@ -133,6 +136,37 @@ pub fn update_screen(
             .iter_mut()
             .for_each(|section| section.style.font_size = font_size);
     }
+}
+
+pub fn update_screen_header(
+    mut left_title_q: Query<&mut Text, With<LeftTitle>>,
+    mut events: EventReader<ScreenUpdateEvent>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let screen_update = &screen_update_event.0;
+        let window = windows.get_primary().unwrap();
+
+        // Update the left title
+        let mut left_title_text = left_title_q.get_single_mut().unwrap();
+        left_title_text.sections =
+            build_text_sections(&screen_update.title_left, false, &asset_server);
+        apply_font_size(&mut left_title_text, window);
+    }
+}
+
+/// Compute and apply the base font size to all the sections of a Text component
+fn apply_font_size(text: &mut Text, window: &Window) {
+    let window_height = window.height();
+
+    // Compute the base font size for any text
+    let font_size = (window_height - SCREEN_PADDING * 3.5) / (SCREEN_ROWS as f32);
+
+    // Apply the computed font size to the text sections
+    text.sections
+        .iter_mut()
+        .for_each(|section| section.style.font_size = font_size);
 }
 
 /// Builds the text sections of a Text component given how text should be segmented and styled
