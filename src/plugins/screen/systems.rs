@@ -19,10 +19,17 @@ pub fn setup(mut commands: Commands) {
             style: Style {
                 position_type: PositionType::Relative,
                 flex_direction: FlexDirection::ColumnReverse,
-                size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+                margin: Rect {
+                    left: Val::Auto,
+                    right: Val::Auto,
+                    top: Val::Undefined,
+                    bottom: Val::Undefined,
+                },
+                size: Size::new(Val::Auto, Val::Percent(100.0)),
+                aspect_ratio: Some(1.225),
                 ..default()
             },
-            color: UiColor(Color::rgb_u8(0x0d, 0x14, 0x23)),
+            color: UiColor(Color::NONE),
             ..default()
         })
         .id();
