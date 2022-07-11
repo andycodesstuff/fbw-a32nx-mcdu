@@ -1,6 +1,10 @@
 use bevy::prelude::*;
 
-/// Represents the MCDU's left title
+/// Represents the title of the current page displayed on the MCDU
+#[derive(Component)]
+pub struct PageTitle;
+
+/// Represents an additional title that might be displayed on the left of the main page title
 #[derive(Component)]
 pub struct LeftTitle;
 

@@ -1,6 +1,6 @@
 use crate::{
     plugins::{
-        screen::components::{LeftTitle, MainContentCell, Scratchpad},
+        screen::components::{LeftTitle, MainContentCell, PageTitle, Scratchpad},
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
     SCREEN_PADDING, SCREEN_ROWS,
@@ -82,6 +82,8 @@ pub fn setup(mut commands: Commands) {
                         match col_index {
                             #[rustfmt::skip]
                             0 => { text_cell.insert(LeftTitle); }
+                            #[rustfmt::skip]
+                            1 => { text_cell.insert(PageTitle); }
                             _ => {}
                         };
                     } else if row_index == SCREEN_ROWS - 1 {
@@ -107,7 +109,8 @@ pub fn setup(mut commands: Commands) {
  */
 /// Updates the header section of the MCDU screen
 pub fn update_screen_header(
-    mut left_title_q: Query<&mut Text, With<LeftTitle>>,
+    mut page_title_q: Query<&mut Text, (With<PageTitle>, Without<LeftTitle>)>,
+    mut left_title_q: Query<&mut Text, (With<LeftTitle>, Without<PageTitle>)>,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
     windows: Res<Windows>,
@@ -115,6 +118,11 @@ pub fn update_screen_header(
     for screen_update_event in events.iter() {
         let screen_update = &screen_update_event.0;
         let window = windows.get_primary().unwrap();
+
+        // Update the title of the current page
+        let mut page_title_text = page_title_q.get_single_mut().unwrap();
+        page_title_text.sections = build_text_sections(&screen_update.title, false, &asset_server);
+        apply_font_size(&mut page_title_text, window);
 
         // Update the left title
         let mut left_title_text = left_title_q.get_single_mut().unwrap();
