@@ -9,6 +9,7 @@ use bevy::prelude::*;
 use rand::Rng;
 
 const FONT_ASPECT_RATIO: f32 = 1.3850;
+const FONT_SIZE_PERCENT: f32 = 0.90;
 
 /// Set-ups the UI hierarchy of the MCDU and the elements that will be populated with data
 pub fn setup(mut commands: Commands, windows: Res<Windows>) {
@@ -19,8 +20,9 @@ pub fn setup(mut commands: Commands, windows: Res<Windows>) {
 
     // Compute the width of the container element to show at most SCREEN_COLS characters of text
     let row_height = window_height / (SCREEN_ROWS as f32);
-    let row_width = (row_height / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32);
-    let font_whitespace = row_height - (row_height / FONT_ASPECT_RATIO);
+    let font_size = row_height * FONT_SIZE_PERCENT;
+    let row_width = (font_size / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32);
+    let font_whitespace = font_size - (font_size / FONT_ASPECT_RATIO);
 
     // Root container
     let screen = commands
@@ -207,7 +209,7 @@ pub fn update_screen_scratchpad(
 /// Compute and apply the base font size to all the sections of a Text component
 fn apply_font_size(text: &mut Text, window: &Window) {
     let window_height = window.height();
-    let font_size = window_height / (SCREEN_ROWS as f32);
+    let font_size = (window_height / (SCREEN_ROWS as f32)) * FONT_SIZE_PERCENT;
 
     // Apply the computed font size to the text sections
     text.sections
