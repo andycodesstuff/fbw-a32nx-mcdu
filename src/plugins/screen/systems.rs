@@ -155,8 +155,34 @@ pub fn update_screen_header(
 
         // Update the page indicator
         let mut page_indicator_text = page_indicator_q.get_single_mut().unwrap();
-        page_indicator_text.sections =
-            build_text_sections(&screen_update.page, false, &asset_server);
+        let parsed_text = &screen_update.page;
+        if !parsed_text.is_empty() {
+            // Render the current page
+            page_indicator_text.sections = build_text_sections(parsed_text, false, &asset_server);
+        } else {
+            // Render horizontal arrows instead
+            let render_sx = screen_update.arrows[2];
+            let render_dx = screen_update.arrows[3];
+
+            page_indicator_text.sections = vec![
+                TextSection {
+                    value: (if render_sx { "←" } else { "" }).to_string(),
+                    style: TextStyle {
+                        font: asset_server.load("HoneywellMCDU.ttf"),
+                        font_size: 0.0,
+                        color: Color::rgb_u8(0xff, 0xff, 0xff),
+                    },
+                },
+                TextSection {
+                    value: (if render_dx { "→" } else { "" }).to_string(),
+                    style: TextStyle {
+                        font: asset_server.load("HoneywellMCDU.ttf"),
+                        font_size: 0.0,
+                        color: Color::rgb_u8(0xff, 0xff, 0xff),
+                    },
+                },
+            ];
+        }
         apply_font_size(&mut page_indicator_text, window);
 
         // Update the left title

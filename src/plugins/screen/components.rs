@@ -4,7 +4,8 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct PageTitle;
 
-/// Represents which page is currently being displayed on the MCDU
+/// Represents which page is currently being displayed on the MCDU. Horizontal arrows might be
+/// shown instead when the page number is not relevant for the given context
 #[derive(Component)]
 pub struct PageIndicator;
 
