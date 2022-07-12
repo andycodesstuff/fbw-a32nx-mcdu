@@ -21,8 +21,18 @@ pub const WS_SERVER_ADDR: &str = "127.0.0.1:8380";
 pub fn setup(mut commands: Commands) {
     let (tx, rx) = unbounded::<ScreenUpdate>();
 
-    // Start the WebSocket server on a different thread
     std::thread::spawn(move || {
+        if cfg!(feature = "debug-test-msg") {
+            // Loads a test message from a local JSON file
+            let path = "test_message.json";
+            let json_msg = fs::read_to_string(path).unwrap();
+
+            handle_update_command(tx, Some(&json_msg));
+            info!("Test message loaded");
+            return;
+        }
+
+        // Start the WebSocket server on a different thread
         Builder::new_current_thread()
             .enable_io()
             .build()
@@ -194,12 +204,4 @@ fn parse_raw_text(raw_text: String) -> ParsedText {
     }
 
     result
-}
-
-#[allow(dead_code)]
-fn load_test_message(tx: Sender<ScreenUpdate>) {
-    let path = "test_message.json";
-    let json_msg = fs::read_to_string(path).unwrap();
-
-    handle_update_command(tx, Some(&json_msg));
 }

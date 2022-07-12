@@ -2,149 +2,149 @@
   "right": {
     "lines": [
       [
-        "{white} FMC FLT NO{end}",
-        "{white}GMT {end}",
-        ""
+        "{white}        {end}",
+        "{white}SPD/ALT   {end}",
+        "{white}TIME{sp}{sp}{sp}{sp}{end}"
       ],
       [
-        "{amber}_______{end}",
-        "{green}{small}2029{end}{end}",
-        ""
+        "{green}LICJ{end}",
+        "{small}{white}{white}---{end}{white}/ -----{end}{end}{end}",
+        "{small}{green}0000{sp}{sp}{sp}{sp}{end}{end}"
       ],
       [
-        "{white} DEP{end}",
-        "",
-        ""
+        "{white}        {end}",
+        "{white}4867NM   {end}",
+        "{white}{white}BRG008°{end} {end}"
       ],
       [
-        "{amber}____{end}",
-        "",
-        ""
+        "{white}ROSAS{end}",
+        "{small}{white}{white}---{end}{white}/ FL280{end}{end}{end}",
+        "{small}{white}1210{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white} M742   {end}",
+        "{green}36     {end}",
+        "{white}{green}{green}TRK016°{end}{end} {end}"
+      ],
+      [
+        "{green}AMANO{end}",
+        "{small}{white}{white}---{end}{green}/   \"  {end}{end}{end}",
+        "{small}{green}1215{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white} M742   {end}",
+        "{green}49     {end}",
+        "{white}{green}{end} {end}"
+      ],
+      [
+        "{green}DELER{end}",
+        "{small}{white}{white}---{end}{green}/   \"  {end}{end}{end}",
+        "{small}{green}1222{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white}        {end}",
+        "{green}10     {end}",
+        "{white}{green}{end} {end}"
+      ],
+      [
+        "{green}(DECEL){end}",
+        "{small}{white}{white}---{end}{white}/ -----{end}{end}{end}",
+        "{small}{white}----{sp}{sp}{sp}{sp}{end}{end}"
       ],
       [
         "{white} DEST{end}",
-        "",
-        ""
+        "{white}DIST EFOB{end}",
+        "{white}TIME{sp}{sp}{sp}{sp}{end}"
       ],
       [
-        "{amber}____{end}",
-        "{inop}CREW DETAILS>{end}",
-        ""
-      ],
-      [
-        "{white} FOB{end}",
-        "",
-        ""
-      ],
-      [
-        "{green}   {small}4.0{end}{end}",
-        "",
-        ""
-      ],
-      [
-        "{white} ETE{end}",
-        "",
-        ""
-      ],
-      [
-        "{amber}____{end}",
-        "{cyan}INIT DATA REQ*{end}",
-        ""
-      ],
-      [
-        "",
-        "{white}ADVISORY {end}",
-        ""
-      ],
-      [
-        "{white}<AOC MENU{end}",
-        "",
-        ""
+        "{white}LIRN{end}",
+        "{white}{small}4996  ---{end}{end}",
+        "{white}{small}1229{end}{sp}{sp}{sp}{sp}{end}"
       ]
     ],
-    "scratchpad": "{white}GPS PRIMARY{end}",
-    "title": "{white}INIT/REVIEW{end}",
-    "titleLeft": "{small}{white}AOC{end}{end}",
-    "page": "{small}1/2{end}",
+    "scratchpad": "{white}AOC ACT F-PLN UPLINK{end}",
+    "title": "{white}{left}{small}{sp}FROM{end}{yellow}{sp}{end}{end}{right}{small}DLH0954{sp}{sp}{sp}{end}{end}{end}",
+    "titleLeft": "{small}{end}",
+    "page": "",
     "arrows": [
-      false,
-      false,
-      false,
-      false
+      true,
+      true,
+      true,
+      true
     ]
   },
   "left": {
     "lines": [
       [
-        "{white} FMC FLT NO{end}",
-        "{white}GMT {end}",
-        ""
+        "{white}        {end}",
+        "{white}SPD/ALT   {end}",
+        "{white}TIME{sp}{sp}{sp}{sp}{end}"
       ],
       [
-        "{amber}_______{end}",
-        "{green}{small}2029{end}{end}",
-        ""
+        "{green}LICJ{end}",
+        "{small}{white}{white}---{end}{white}/ -----{end}{end}{end}",
+        "{small}{green}0000{sp}{sp}{sp}{sp}{end}{end}"
       ],
       [
-        "{white} DEP{end}",
-        "",
-        ""
+        "{white}        {end}",
+        "{white}4867NM   {end}",
+        "{white}{white}BRG008°{end} {end}"
       ],
       [
-        "{amber}____{end}",
-        "",
-        ""
+        "{white}ROSAS{end}",
+        "{small}{white}{white}---{end}{white}/ FL280{end}{end}{end}",
+        "{small}{white}1210{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white} M742   {end}",
+        "{green}36     {end}",
+        "{white}{green}{green}TRK016°{end}{end} {end}"
+      ],
+      [
+        "{green}AMANO{end}",
+        "{small}{white}{white}---{end}{green}/   \"  {end}{end}{end}",
+        "{small}{green}1215{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white} M742   {end}",
+        "{green}49     {end}",
+        "{white}{green}{end} {end}"
+      ],
+      [
+        "{green}DELER{end}",
+        "{small}{white}{white}---{end}{green}/   \"  {end}{end}{end}",
+        "{small}{green}1222{sp}{sp}{sp}{sp}{end}{end}"
+      ],
+      [
+        "{white}        {end}",
+        "{green}10     {end}",
+        "{white}{green}{end} {end}"
+      ],
+      [
+        "{green}(DECEL){end}",
+        "{small}{white}{white}---{end}{white}/ -----{end}{end}{end}",
+        "{small}{white}----{sp}{sp}{sp}{sp}{end}{end}"
       ],
       [
         "{white} DEST{end}",
-        "",
-        ""
+        "{white}DIST EFOB{end}",
+        "{white}TIME{sp}{sp}{sp}{sp}{end}"
       ],
       [
-        "{amber}____{end}",
-        "{inop}CREW DETAILS>{end}",
-        ""
-      ],
-      [
-        "{white} FOB{end}",
-        "",
-        ""
-      ],
-      [
-        "{green}   {small}4.0{end}{end}",
-        "",
-        ""
-      ],
-      [
-        "{white} ETE{end}",
-        "",
-        ""
-      ],
-      [
-        "{amber}____{end}",
-        "{cyan}INIT DATA REQ*{end}",
-        ""
-      ],
-      [
-        "",
-        "{white}ADVISORY {end}",
-        ""
-      ],
-      [
-        "{white}<AOC MENU{end}",
-        "",
-        ""
+        "{white}LIRN{end}",
+        "{white}{small}4996  ---{end}{end}",
+        "{white}{small}1229{end}{sp}{sp}{sp}{sp}{end}"
       ]
     ],
-    "scratchpad": "{white}GPS PRIMARY{end}",
-    "title": "{white}INIT/REVIEW{end}",
-    "titleLeft": "{small}{white}AOC{end}{end}",
-    "page": "{small}1/2{end}",
+    "scratchpad": "{white}AOC ACT F-PLN UPLINK{end}",
+    "title": "{white}{left}{small}{sp}FROM{end}{yellow}{sp}{end}{end}{right}{small}DLH0954{sp}{sp}{sp}{end}{end}{end}",
+    "titleLeft": "{small}{end}",
+    "page": "",
     "arrows": [
-      false,
-      false,
-      false,
-      false
+      true,
+      true,
+      true,
+      true
     ]
   }
 }
