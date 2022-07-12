@@ -1,6 +1,9 @@
 use crate::{
     plugins::{
-        screen::components::{LeftTitle, MainContentCell, PageIndicator, PageTitle, Scratchpad},
+        screen::components::{
+            LeftTitle, MainContentCell, PageIndicator, PageTitle, Scratchpad,
+            VerticalScrollIndicator,
+        },
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
     SCREEN_COLS, SCREEN_ROWS,
@@ -106,10 +109,12 @@ pub fn setup(mut commands: Commands, windows: Res<Windows>) {
                             _ => {}
                         };
                     } else if row_index == SCREEN_ROWS - 1 {
-                        // Scratchpad row
+                        // Footer row
                         match col_index {
                             #[rustfmt::skip]
                             0 => { text_cell.insert(Scratchpad); }
+                            #[rustfmt::skip]
+                            2 => { text_cell.insert(VerticalScrollIndicator); }
                             _ => {}
                         };
                     } else {
@@ -213,9 +218,10 @@ pub fn update_screen_main_content(
     }
 }
 
-/// Updates the scratchpad section of the MCDU screen
-pub fn update_screen_scratchpad(
-    mut scratchpad_q: Query<&mut Text, With<Scratchpad>>,
+/// Updates the footer section of the MCDU screen
+pub fn update_screen_footer(
+    mut scratchpad_q: Query<&mut Text, (With<Scratchpad>, Without<VerticalScrollIndicator>)>,
+    mut scroll_indicator_q: Query<&mut Text, (With<VerticalScrollIndicator>, Without<Scratchpad>)>,
     mut events: EventReader<ScreenUpdateEvent>,
     asset_server: Res<AssetServer>,
     windows: Res<Windows>,
@@ -229,6 +235,31 @@ pub fn update_screen_scratchpad(
         scratchpad_text.sections =
             build_text_sections(&screen_update.scratchpad, false, &asset_server);
         apply_font_size(&mut scratchpad_text, window);
+
+        // Update the vertical scroll indicator
+        let mut scroll_indicator_text = scroll_indicator_q.get_single_mut().unwrap();
+        let render_up = screen_update.arrows[0];
+        let render_down = screen_update.arrows[1];
+
+        scroll_indicator_text.sections = vec![
+            TextSection {
+                value: (if render_down { "↓" } else { "" }).to_string(),
+                style: TextStyle {
+                    font: asset_server.load("HoneywellMCDU.ttf"),
+                    font_size: 0.0,
+                    color: Color::rgb_u8(0xff, 0xff, 0xff),
+                },
+            },
+            TextSection {
+                value: (if render_up { "↑" } else { "" }).to_string(),
+                style: TextStyle {
+                    font: asset_server.load("HoneywellMCDU.ttf"),
+                    font_size: 0.0,
+                    color: Color::rgb_u8(0xff, 0xff, 0xff),
+                },
+            },
+        ];
+        apply_font_size(&mut scroll_indicator_text, window);
     }
 }
 

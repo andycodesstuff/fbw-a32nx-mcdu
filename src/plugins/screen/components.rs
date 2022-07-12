@@ -34,3 +34,8 @@ impl MainContentCell {
 /// Represents the MCDU's scratchpad
 #[derive(Component)]
 pub struct Scratchpad;
+
+/// Represents the vertical arrows that are shown to indicate that the content shown on the
+/// MCDU's screen is vertically scrollable with the arrow buttons
+#[derive(Component)]
+pub struct VerticalScrollIndicator;

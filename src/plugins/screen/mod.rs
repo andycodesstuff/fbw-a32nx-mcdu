@@ -2,7 +2,7 @@ pub mod components;
 pub mod systems;
 
 use crate::plugins::screen::systems::{
-    setup, update_screen_header, update_screen_main_content, update_screen_scratchpad,
+    setup, update_screen_footer, update_screen_header, update_screen_main_content,
 };
 use bevy::prelude::*;
 use bevy_inspector_egui::WorldInspectorPlugin;
@@ -15,6 +15,6 @@ impl Plugin for ScreenPlugin {
             .add_startup_system(setup)
             .add_system(update_screen_header)
             .add_system(update_screen_main_content)
-            .add_system(update_screen_scratchpad);
+            .add_system(update_screen_footer);
     }
 }
