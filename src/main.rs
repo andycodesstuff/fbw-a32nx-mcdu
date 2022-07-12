@@ -7,8 +7,7 @@ pub const BG_COLOR: Color = Color::rgb(0.05, 0.08, 0.14);
 
 // Describe the height and width of the MCDU screen in characters
 pub const SCREEN_ROWS: usize = 14;
-pub const SCREEN_COLS: usize = 24;
-pub const SCREEN_PADDING: f32 = 8.0; // in pixels
+pub const SCREEN_COLS: usize = 25;
 
 fn main() {
     App::new()

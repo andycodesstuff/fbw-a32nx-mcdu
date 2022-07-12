@@ -3,15 +3,24 @@ use crate::{
         screen::components::{LeftTitle, MainContentCell, PageIndicator, PageTitle, Scratchpad},
         server::{ParsedText, ScreenUpdateEvent, TextFormatter, TextSegment},
     },
-    SCREEN_PADDING, SCREEN_ROWS,
+    SCREEN_COLS, SCREEN_ROWS,
 };
 use bevy::prelude::*;
 use rand::Rng;
 
+const FONT_ASPECT_RATIO: f32 = 1.3850;
+
 /// Set-ups the UI hierarchy of the MCDU and the elements that will be populated with data
-pub fn setup(mut commands: Commands) {
-    let row_height = 100.0 / (SCREEN_ROWS as f32);
+pub fn setup(mut commands: Commands, windows: Res<Windows>) {
     let mut rng = rand::thread_rng();
+
+    let window = windows.get_primary().unwrap();
+    let window_height = window.height();
+
+    // Compute the width of the container element to show at most SCREEN_COLS characters of text
+    let row_height = window_height / (SCREEN_ROWS as f32);
+    let row_width = (row_height / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32);
+    let font_whitespace = row_height - (row_height / FONT_ASPECT_RATIO);
 
     // Root container
     let screen = commands
@@ -25,8 +34,7 @@ pub fn setup(mut commands: Commands) {
                     top: Val::Undefined,
                     bottom: Val::Undefined,
                 },
-                size: Size::new(Val::Auto, Val::Percent(100.0)),
-                aspect_ratio: Some(1.225),
+                size: Size::new(Val::Px(row_width + font_whitespace), Val::Px(window_height)),
                 ..default()
             },
             color: UiColor(Color::NONE),
@@ -53,17 +61,16 @@ pub fn setup(mut commands: Commands) {
                         position: Rect {
                             left: Val::Px(0.0),
                             right: Val::Px(0.0),
-                            top: Val::Percent(row_height * (row_index as f32)),
+                            top: Val::Px(row_height * (row_index as f32)),
                             bottom: Val::Auto,
                         },
                         padding: Rect {
-                            left: Val::Px(SCREEN_PADDING),
-                            right: Val::Px(SCREEN_PADDING),
+                            left: Val::Px(font_whitespace),
+                            right: Val::Undefined,
                             top: Val::Undefined,
                             bottom: Val::Undefined,
                         },
-                        size: Size::new(Val::Percent(100.0), Val::Percent(row_height)),
-                        overflow: Overflow::Hidden,
+                        size: Size::new(Val::Percent(100.0), Val::Px(row_height)),
                         ..default()
                     },
                     color: UiColor(Color::rgba(
@@ -200,9 +207,7 @@ pub fn update_screen_scratchpad(
 /// Compute and apply the base font size to all the sections of a Text component
 fn apply_font_size(text: &mut Text, window: &Window) {
     let window_height = window.height();
-
-    // Compute the base font size for any text
-    let font_size = (window_height - SCREEN_PADDING * 3.5) / (SCREEN_ROWS as f32);
+    let font_size = window_height / (SCREEN_ROWS as f32);
 
     // Apply the computed font size to the text sections
     text.sections
