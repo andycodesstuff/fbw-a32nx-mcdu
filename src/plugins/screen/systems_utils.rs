@@ -1,10 +1,11 @@
 use crate::{
     plugins::server::{ParsedText, TextFormatter, TextSegment},
-    SCREEN_ROWS,
+    SCREEN_COLS, SCREEN_ROWS,
 };
 use bevy::prelude::*;
+use unicode_segmentation::UnicodeSegmentation;
 
-pub(super) const FONT_ASPECT_RATIO: f32 = 1.3850;
+const FONT_ASPECT_RATIO: f32 = 1.3850;
 const FONT_SIZE_PERCENT: f32 = 0.90;
 
 /// Computes the font size given the window where text will be displayed
@@ -19,6 +20,12 @@ pub(super) fn compute_font_size(window: &Window) -> f32 {
 /// one
 pub(super) fn compute_font_whitespace(font_size: f32) -> f32 {
     font_size - (font_size / FONT_ASPECT_RATIO)
+}
+
+/// Computes the width of a single row based on the font size and the n. of columns we have to
+/// display
+pub(super) fn compute_row_width(font_size: f32) -> f32 {
+    (font_size / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32)
 }
 
 #[derive(Clone, Copy)]
@@ -43,6 +50,7 @@ pub(super) fn compute_text_bundles(
 
     let font_size = compute_font_size(window);
     let font_whitespace = compute_font_whitespace(font_size);
+    let row_width = compute_row_width(font_size);
 
     for TextSegment { formatters, value } in parsed_text {
         let mut font_name = if is_label_row {
@@ -101,16 +109,24 @@ pub(super) fn compute_text_bundles(
         };
     }
 
-    let create_text_bundle = |align, sections| -> TextBundle {
+    let create_text_bundle = |align, sections: Vec<TextSection>| -> TextBundle {
         let left_pos = match align {
             TextAlign::Left => Val::Px(font_whitespace),
-            TextAlign::Center => Val::Auto,
-            TextAlign::Right => Val::Undefined,
+            TextAlign::Center => {
+                // Compute the horizontal size (in pixels) of the text to be rendered
+                let text_length: usize = sections
+                    .iter()
+                    .map(|s| s.value.graphemes(true).count())
+                    .sum();
+                let text_size = (text_length as f32) * (font_size / FONT_ASPECT_RATIO);
+
+                Val::Px(font_whitespace + (row_width / 2.0) - (text_size / 2.0))
+            }
+            _ => Val::Undefined,
         };
         let right_pos = match align {
-            TextAlign::Left => Val::Undefined,
-            TextAlign::Center => Val::Auto,
             TextAlign::Right => Val::Px(0.0),
+            _ => Val::Undefined,
         };
 
         TextBundle {

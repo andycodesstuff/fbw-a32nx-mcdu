@@ -1,11 +1,14 @@
 use super::{
     components::{Row, RowContent, RowFooter, RowHeader},
     systems_utils::{
-        compute_font_size, compute_font_whitespace, compute_text_bundles, TextAlign,
-        FONT_ASPECT_RATIO,
+        compute_font_size, compute_font_whitespace, compute_row_width, compute_text_bundles,
+        TextAlign,
     },
 };
-use crate::{plugins::server::ScreenUpdateEvent, SCREEN_COLS, SCREEN_ROWS};
+use crate::{
+    plugins::server::{ScreenUpdateEvent, TextSegment},
+    SCREEN_ROWS,
+};
 use bevy::prelude::*;
 use rand::Rng;
 
@@ -17,10 +20,10 @@ pub fn setup_system(mut commands: Commands, windows: Res<Windows>) {
     let window_height = window.height();
 
     // Compute the width of the container element to show at most SCREEN_COLS characters of text
-    let row_height = window_height / (SCREEN_ROWS as f32);
     let font_size = compute_font_size(window);
-    let row_width = (font_size / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32);
     let font_whitespace = compute_font_whitespace(font_size);
+    let row_height = window_height / (SCREEN_ROWS as f32);
+    let row_width = compute_row_width(font_size);
 
     // Root container
     #[rustfmt::skip]
