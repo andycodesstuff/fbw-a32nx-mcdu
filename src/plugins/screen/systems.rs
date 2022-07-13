@@ -101,3 +101,65 @@ pub fn clear_screen_system(
         rows_q.for_each(|e| commands.entity(e).despawn_descendants());
     });
 }
+
+/// Updates the header section of the screen
+pub fn update_header_row_system(
+    mut commands: Commands,
+    mut events: EventReader<ScreenUpdateEvent>,
+    header_row_q: Query<Entity, (With<Row>, With<RowHeader>)>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let header_row = header_row_q.get_single().unwrap();
+        let window = windows.get_primary().unwrap();
+        let screen_update = &screen_update_event.0;
+
+        // Update the title of the current page
+        let title = &screen_update.title;
+        compute_text_bundles(title, TextAlign::Center, false, &asset_server, &window)
+            .into_iter()
+            .for_each(|b| {
+                commands.spawn_bundle(b).insert(Parent(header_row));
+            });
+
+        // Update the left title
+        let title_left = &screen_update.title_left;
+        compute_text_bundles(title_left, TextAlign::Left, false, &asset_server, &window)
+            .into_iter()
+            .for_each(|b| {
+                commands.spawn_bundle(b).insert(Parent(header_row));
+            });
+
+        // Update the page indicator
+        let page = &screen_update.page;
+        if !page.is_empty() {
+            // Render the current page
+            compute_text_bundles(page, TextAlign::Right, false, &asset_server, &window)
+                .into_iter()
+                .for_each(|b| {
+                    commands.spawn_bundle(b).insert(Parent(header_row));
+                });
+        } else {
+            // Render horizontal arrows instead
+            let render_sx = screen_update.arrows[2];
+            let render_dx = screen_update.arrows[3];
+            let arrows = vec![
+                TextSegment {
+                    formatters: Vec::new(),
+                    value: (if render_sx { "←" } else { "" }).to_string(),
+                },
+                TextSegment {
+                    formatters: Vec::new(),
+                    value: (if render_dx { "→" } else { "" }).to_string(),
+                },
+            ];
+
+            compute_text_bundles(&arrows, TextAlign::Right, false, &asset_server, &window)
+                .into_iter()
+                .for_each(|b| {
+                    commands.spawn_bundle(b).insert(Parent(header_row));
+                });
+        }
+    }
+}
