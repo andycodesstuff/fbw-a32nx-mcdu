@@ -164,6 +164,38 @@ pub fn update_header_row_system(
     }
 }
 
+/// Updates the main content section
+pub fn update_content_rows_system(
+    mut commands: Commands,
+    mut events: EventReader<ScreenUpdateEvent>,
+    content_rows_q: Query<(Entity, &Row), (With<Row>, With<RowContent>)>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let window = windows.get_primary().unwrap();
+        let screen_update = &screen_update_event.0;
+
+        for (row_entity, row) in content_rows_q.iter() {
+            let line = &screen_update.lines[row.row_index - 1];
+            for (col_index, parsed_text) in line.iter().enumerate() {
+                let align = match col_index {
+                    0 => TextAlign::Left,
+                    1 => TextAlign::Center,
+                    2 => TextAlign::Right,
+                    _ => TextAlign::Left,
+                };
+
+                compute_text_bundles(parsed_text, align, row.is_label, &asset_server, &window)
+                    .into_iter()
+                    .for_each(|b| {
+                        commands.spawn_bundle(b).insert(Parent(row_entity));
+                    });
+            }
+        }
+    }
+}
+
 /// Updates the header section of the screen
 pub fn update_footer_row_system(
     mut commands: Commands,
