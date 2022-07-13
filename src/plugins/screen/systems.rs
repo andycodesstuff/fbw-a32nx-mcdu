@@ -1,12 +1,13 @@
 use super::{
     components::{Row, RowContent, RowFooter, RowHeader},
-    systems_utils::compute_font_size,
+    systems_utils::{
+        compute_font_size, compute_font_whitespace, compute_text_bundles, TextAlign,
+        FONT_ASPECT_RATIO,
+    },
 };
 use crate::{plugins::server::ScreenUpdateEvent, SCREEN_COLS, SCREEN_ROWS};
 use bevy::prelude::*;
 use rand::Rng;
-
-const FONT_ASPECT_RATIO: f32 = 1.3850;
 
 /// Set-ups the UI hierarchy
 pub fn setup_system(mut commands: Commands, windows: Res<Windows>) {
@@ -19,7 +20,7 @@ pub fn setup_system(mut commands: Commands, windows: Res<Windows>) {
     let row_height = window_height / (SCREEN_ROWS as f32);
     let font_size = compute_font_size(window);
     let row_width = (font_size / FONT_ASPECT_RATIO) * (SCREEN_COLS as f32);
-    let font_whitespace = font_size - (font_size / FONT_ASPECT_RATIO);
+    let font_whitespace = compute_font_whitespace(font_size);
 
     // Root container
     #[rustfmt::skip]

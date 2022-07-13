@@ -4,6 +4,7 @@ use crate::{
 };
 use bevy::prelude::*;
 
+pub(super) const FONT_ASPECT_RATIO: f32 = 1.3850;
 const FONT_SIZE_PERCENT: f32 = 0.90;
 
 /// Computes the font size given the window where text will be displayed
@@ -12,6 +13,12 @@ pub(super) fn compute_font_size(window: &Window) -> f32 {
     let font_size = window_height / (SCREEN_ROWS as f32) * FONT_SIZE_PERCENT;
 
     font_size
+}
+
+/// Computes the horizontal whitespace between the end of a grapheme and the start of the next
+/// one
+pub(super) fn compute_font_whitespace(font_size: f32) -> f32 {
+    font_size - (font_size / FONT_ASPECT_RATIO)
 }
 
 #[derive(Clone, Copy)]
@@ -33,6 +40,9 @@ pub(super) fn compute_text_bundles(
     let mut left_text_sections: Vec<TextSection> = Vec::new();
     let mut center_text_sections: Vec<TextSection> = Vec::new();
     let mut right_text_sections: Vec<TextSection> = Vec::new();
+
+    let font_size = compute_font_size(window);
+    let font_whitespace = compute_font_whitespace(font_size);
 
     for TextSegment { formatters, value } in parsed_text {
         let mut font_name = if is_label_row {
@@ -79,7 +89,7 @@ pub(super) fn compute_text_bundles(
             value: value.clone(),
             style: TextStyle {
                 font: asset_server.load(font_name),
-                font_size: compute_font_size(window),
+                font_size,
                 color,
             },
         };
@@ -93,7 +103,7 @@ pub(super) fn compute_text_bundles(
 
     let create_text_bundle = |align, sections| -> TextBundle {
         let left_pos = match align {
-            TextAlign::Left => Val::Px(0.0),
+            TextAlign::Left => Val::Px(font_whitespace),
             TextAlign::Center => Val::Auto,
             TextAlign::Right => Val::Undefined,
         };
