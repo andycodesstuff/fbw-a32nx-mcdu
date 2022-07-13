@@ -2,7 +2,9 @@ pub mod components;
 pub mod systems;
 pub(self) mod systems_utils;
 
-use self::systems::{clear_screen_system, setup_system, update_header_row_system};
+use self::systems::{
+    clear_screen_system, setup_system, update_footer_row_system, update_header_row_system,
+};
 use bevy::prelude::*;
 
 #[derive(Clone, Hash, Debug, PartialEq, Eq, SystemLabel)]
@@ -21,7 +23,8 @@ impl Plugin for ScreenPlugin {
                 SystemSet::new()
                     .label(UpdateScreen)
                     .after(ClearScreen)
-                    .with_system(update_header_row_system),
+                    .with_system(update_header_row_system)
+                    .with_system(update_footer_row_system),
             );
     }
 }

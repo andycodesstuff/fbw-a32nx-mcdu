@@ -163,3 +163,46 @@ pub fn update_header_row_system(
         }
     }
 }
+
+/// Updates the header section of the screen
+pub fn update_footer_row_system(
+    mut commands: Commands,
+    mut events: EventReader<ScreenUpdateEvent>,
+    footer_row_q: Query<Entity, (With<Row>, With<RowFooter>)>,
+    asset_server: Res<AssetServer>,
+    windows: Res<Windows>,
+) {
+    for screen_update_event in events.iter() {
+        let footer_row = footer_row_q.get_single().unwrap();
+        let window = windows.get_primary().unwrap();
+        let screen_update = &screen_update_event.0;
+
+        // Update the scratchpad
+        let scratchpad = &screen_update.scratchpad;
+        compute_text_bundles(scratchpad, TextAlign::Left, false, &asset_server, &window)
+            .into_iter()
+            .for_each(|b| {
+                commands.spawn_bundle(b).insert(Parent(footer_row));
+            });
+
+        // Update the vertical scroll indicator
+        let render_up = screen_update.arrows[0];
+        let render_down = screen_update.arrows[1];
+        let arrows = vec![
+            TextSegment {
+                formatters: Vec::new(),
+                value: (if render_down { "↓" } else { "" }).to_string(),
+            },
+            TextSegment {
+                formatters: Vec::new(),
+                value: (if render_up { "↑" } else { "" }).to_string(),
+            },
+        ];
+
+        compute_text_bundles(&arrows, TextAlign::Right, false, &asset_server, &window)
+            .into_iter()
+            .for_each(|b| {
+                commands.spawn_bundle(b).insert(Parent(footer_row));
+            });
+    }
+}
